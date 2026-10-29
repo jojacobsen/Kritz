@@ -41,3 +41,6 @@
 "No QR code found" = "Kein QR-Code gefunden";
 "Copied to clipboard" = "In die Zwischenablage kopiert";
 "Select" = "Auswählen";
+"Save changes before closing?" = "Änderungen vor dem Schließen sichern?";
+"Your annotations will be lost if you don't save them." = "Deine Anmerkungen gehen verloren, wenn du sie nicht sicherst.";
+"Don't Save" = "Nicht sichern";

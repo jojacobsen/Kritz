@@ -19,9 +19,16 @@ final class CanvasView: NSView {
     private(set) var annotations: [Annotation] = []
     private var draft: Annotation?
 
+    /// Kritz accent (the pink from the app icon), used as the default draw color.
+    static let accent = NSColor(srgbRed: 1.0, green: 45.0 / 255.0, blue: 120.0 / 255.0, alpha: 1.0)
+
     var currentTool: Tool = .arrow
-    var currentColor: NSColor = .systemRed
+    var currentColor: NSColor = CanvasView.accent
     var currentLineWidth: CGFloat = 4
+
+    /// True once the document has edits that haven't been saved to disk yet.
+    /// Set on every undoable change; cleared after a successful save.
+    var isDirty = false
 
     /// Called after the canvas dimensions change (crop or auto-grow), so the window re-fits.
     var onCanvasResized: (() -> Void)?
@@ -189,28 +196,41 @@ final class CanvasView: NSView {
         (text as NSString).draw(at: NSPoint(x: pill.minX + 6, y: pill.minY + 3), withAttributes: attrs)
     }
 
+    /// Skitch-style arrow: a single filled shape with a shaft that tapers from a
+    /// thin tail to a wider neck, capped by a sharp, slightly barbed arrowhead.
     private func drawArrow(from start: CGPoint, to end: CGPoint, lineWidth: CGFloat) {
-        let angle = atan2(end.y - start.y, end.x - start.x)
-        let headLength = max(14, lineWidth * 3.4)
-        let shaftEnd = CGPoint(x: end.x - cos(angle) * headLength * 0.6,
-                               y: end.y - sin(angle) * headLength * 0.6)
-        let shaft = NSBezierPath()
-        shaft.lineWidth = lineWidth
-        shaft.lineCapStyle = .round
-        shaft.move(to: start)
-        shaft.line(to: shaftEnd)
-        shaft.stroke()
+        let dx = end.x - start.x, dy = end.y - start.y
+        let length = hypot(dx, dy)
+        guard length > 0.5 else { return }
 
-        let left = CGPoint(x: end.x - cos(angle - .pi / 7) * headLength,
-                           y: end.y - sin(angle - .pi / 7) * headLength)
-        let right = CGPoint(x: end.x - cos(angle + .pi / 7) * headLength,
-                            y: end.y - sin(angle + .pi / 7) * headLength)
-        let head = NSBezierPath()
-        head.move(to: end)
-        head.line(to: left)
-        head.line(to: right)
-        head.close()
-        head.fill()
+        // Direction + perpendicular unit vectors.
+        let ux = dx / length, uy = dy / length
+        let px = -uy, py = ux
+
+        // Proportions scale with the chosen line width, clamped to the arrow length.
+        let headLen = min(length * 0.9, max(20, lineWidth * 5.0))
+        let headHalf = max(9, lineWidth * 3.1)      // half-width of the arrowhead base
+        let tailHalf = max(0.9, lineWidth * 0.32)   // half-width at the very tail (thin)
+        let neckHalf = max(2.2, lineWidth * 1.15)   // half-width where shaft meets head
+
+        // Neck = where the shaft stops and the head begins.
+        let nx = end.x - ux * headLen, ny = end.y - uy * headLen
+
+        func pt(_ bx: CGFloat, _ by: CGFloat, _ half: CGFloat, _ sign: CGFloat) -> CGPoint {
+            CGPoint(x: bx + px * half * sign, y: by + py * half * sign)
+        }
+
+        let path = NSBezierPath()
+        path.move(to: pt(start.x, start.y, tailHalf, +1)) // tail, left
+        path.line(to: pt(nx, ny, neckHalf, +1))           // neck, left
+        path.line(to: pt(nx, ny, headHalf, +1))           // head barb, left
+        path.line(to: end)                                // tip
+        path.line(to: pt(nx, ny, headHalf, -1))           // head barb, right
+        path.line(to: pt(nx, ny, neckHalf, -1))           // neck, right
+        path.line(to: pt(start.x, start.y, tailHalf, -1)) // tail, right
+        path.close()
+        path.lineJoinStyle = .round
+        path.fill()
     }
 
     private func drawText(_ a: Annotation) {
@@ -504,6 +524,7 @@ final class CanvasView: NSView {
         undoStack.append(currentState())
         redoStack.removeAll()
         if undoStack.count > 50 { undoStack.removeFirst() }
+        isDirty = true
     }
 
     private func apply(_ state: CanvasState) {

@@ -524,16 +524,23 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
         pasteboard.writeObjects([canvas.exportImage()])
     }
 
-    @objc func saveDocument(_ sender: Any?) {
+    @objc func saveDocument(_ sender: Any?) { save() }
+
+    /// Presents the save sheet. Calls `completion(true)` once the file is written.
+    private func save(completion: ((Bool) -> Void)? = nil) {
+        guard let window else { completion?(false); return }
         let panel = NSSavePanel()
         panel.allowedContentTypes = [.png, .jpeg]
         panel.nameFieldStringValue = "\(L("Screenshot")).png"
         panel.canCreateDirectories = true
-        panel.beginSheetModal(for: window!) { [weak self] response in
-            guard let self, response == .OK, let url = panel.url else { return }
+        panel.beginSheetModal(for: window) { [weak self] response in
+            guard let self, response == .OK, let url = panel.url else { completion?(false); return }
             let ext = url.pathExtension.lowercased()
             let data = (ext == "jpg" || ext == "jpeg") ? canvas.exportJPEGData() : canvas.exportPNGData()
-            if let data { try? data.write(to: url) }
+            var ok = false
+            if let data { ok = (try? data.write(to: url)) != nil }
+            if ok { canvas.isDirty = false }
+            completion?(ok)
         }
     }
 
@@ -565,6 +572,33 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
     }
 
     // MARK: - NSWindowDelegate
+
+    private var forceClose = false
+
+    func windowShouldClose(_ sender: NSWindow) -> Bool {
+        if forceClose || !canvas.isDirty { return true }
+        let alert = NSAlert()
+        alert.messageText = L("Save changes before closing?")
+        alert.informativeText = L("Your annotations will be lost if you don't save them.")
+        alert.addButton(withTitle: L("Save"))         // first = default (rightmost)
+        alert.addButton(withTitle: L("Cancel"))       // Esc
+        alert.addButton(withTitle: L("Don't Save"))   // leftmost
+        alert.beginSheetModal(for: sender) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .alertFirstButtonReturn: // Save
+                self.save { ok in
+                    if ok { self.forceClose = true; self.window?.close() }
+                }
+            case .alertThirdButtonReturn: // Don't Save
+                self.forceClose = true
+                self.window?.close()
+            default:
+                break // Cancel: keep the window open
+            }
+        }
+        return false
+    }
 
     func windowWillClose(_ notification: Notification) {
         onClose?(self)

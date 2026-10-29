@@ -53,7 +53,11 @@ No cloud. No login. No subscription. Capture → mark up → copy or save. Done.
 2. Open the DMG and drag **Kritz** into **Applications**.
 3. Launch it. On first run macOS asks for the **Screen Recording** permission (needed to capture). Grant it under *System Settings → Privacy & Security → Screen Recording*, then relaunch Kritz.
 
-> **Gatekeeper note:** the current builds are ad-hoc signed, not yet notarized by Apple. macOS may say the app *"cannot be opened because the developer cannot be verified."* Right-click the app → **Open** → **Open**, once. (A notarized build is on the roadmap.)
+> **Gatekeeper note:** the current builds are ad-hoc signed, not yet notarized by Apple, so macOS may say *"Apple could not verify Kritz.app is free of malware."* Two options:
+> - **Click:** try to open it, then go to *System Settings → Privacy & Security*, scroll down and click **Open Anyway**.
+> - **Terminal:** `xattr -dr com.apple.quarantine /Applications/Kritz.app`, then open normally.
+>
+> (A notarized build — no warning at all — is on the roadmap.)
 
 ## Building from source
 

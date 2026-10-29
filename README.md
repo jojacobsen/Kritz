@@ -51,7 +51,12 @@ No cloud. No login. No subscription. Capture → mark up → copy or save. Done.
 
 1. Download `Kritz.dmg` from the [latest release](../../releases/latest).
 2. Open the DMG and drag **Kritz** into **Applications**.
-3. Launch it. On first run macOS asks for the **Screen Recording** permission (needed to capture). Grant it under *System Settings → Privacy & Security → Screen Recording*, then relaunch Kritz.
+3. Launch it. On first run macOS asks for the **Screen Recording** permission, which Kritz needs to capture your screen.
+4. Open *System Settings → Privacy & Security → Screen Recording* and turn the switch next to **Kritz** on:
+
+   <img src="docs/screen-recording.png" width="420" alt="Enable the Screen Recording toggle for Kritz" />
+
+5. Relaunch Kritz. Without this permission the capture stays blank.
 
 The release DMG is **signed with a Developer ID and notarized by Apple**, so it opens without any Gatekeeper warning.
 

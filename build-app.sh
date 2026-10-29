@@ -10,7 +10,7 @@ set -euo pipefail
 
 APP_NAME="Kritz"
 BUNDLE_ID="com.johannesjacob.kritz"
-VERSION="0.1.0"
+VERSION="0.1.1"
 MIN_MACOS="14.0"
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"

@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024"><defs><linearGradient id="kzs-bg" x1="0" y1="100" x2="0" y2="924" gradient-units="userSpaceOnUse">
+<stop offset="0" stop-color="#FFFFFF"></stop>
+<stop offset="0.55" stop-color="#F6F7F9"></stop>
+<stop offset="1" stop-color="#E4E7EC"></stop>
+</linearGradient>
+<linearGradient id="kzs-rim" x1="0" y1="100" x2="0" y2="924" gradient-units="userSpaceOnUse">
+<stop offset="0" stop-color="#FFFFFF" stop-opacity="1"></stop>
+<stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.2"></stop>
+<stop offset="1" stop-color="#B8BEC8" stop-opacity="0.55"></stop>
+</linearGradient>
+<linearGradient id="kzs-ink" x1="340" y1="500" x2="680" y2="660" gradient-units="userSpaceOnUse">
+<stop offset="0" stop-color="#FF5C98"></stop>
+<stop offset="0.5" stop-color="#FF2D78"></stop>
+<stop offset="1" stop-color="#E3165F"></stop>
+</linearGradient>
+<radialGradient id="kzs-sheen" cx="512" cy="180" r="560" gradient-units="userSpaceOnUse">
+<stop offset="0" stop-color="#FFFFFF" stop-opacity="0.9"></stop>
+<stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop>
+</radialGradient>
+<filter id="kzs-drop" x="-20%" y="-20%" width="140%" height="145%">
+<feDropShadow dx="0" dy="18" std-deviation="22" flood-color="#000000" flood-opacity="0.24"></feDropShadow>
+<feDropShadow dx="0" dy="3" std-deviation="3" flood-color="#000000" flood-opacity="0.14"></feDropShadow>
+</filter>
+<filter id="kzs-inner" x="0" y="0" width="100%" height="100%">
+<feGaussianBlur in="SourceAlpha" std-deviation="14" result="b"></feGaussianBlur>
+<feOffset dy="-10" result="o"></feOffset>
+<feComposite in="o" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="s"></feComposite>
+<feFlood flood-color="#8A93A3" flood-opacity="0.28"></feFlood>
+<feComposite in2="s" operator="in"></feComposite>
+</filter>
+<filter id="kzs-win" x="-20%" y="-20%" width="140%" height="150%">
+<feDropShadow dx="0" dy="14" std-deviation="18" flood-color="#1B2230" flood-opacity="0.14"></feDropShadow>
+</filter>
+<filter id="kzs-ink-shadow" x="-30%" y="-30%" width="160%" height="160%">
+<feDropShadow dx="0" dy="8" std-deviation="8" flood-color="#E3165F" flood-opacity="0.26"></feDropShadow>
+<feDropShadow dx="0" dy="2" std-deviation="2" flood-color="#7A0E36" flood-opacity="0.2"></feDropShadow>
+</filter>
+<clipPath id="kzs-clip">
+<path d="M100 352 C100 158 158 100 352 100 L672 100 C866 100 924 158 924 352 L924 672 C924 866 866 924 672 924 L352 924 C158 924 100 866 100 672 Z"></path>
+</clipPath></defs>
+<path d="M100 352 C100 158 158 100 352 100 L672 100 C866 100 924 158 924 352 L924 672 C924 866 866 924 672 924 L352 924 C158 924 100 866 100 672 Z" fill="url(#kzs-bg)" filter="url(#kzs-drop)"></path>
+<g clip-path="url(#kzs-clip)">
+<ellipse cx="512" cy="150" rx="520" ry="300" fill="url(#kzs-sheen)"></ellipse>
+<path d="M100 352 C100 158 158 100 352 100 L672 100 C866 100 924 158 924 352 L924 672 C924 866 866 924 672 924 L352 924 C158 924 100 866 100 672 Z" fill="#FFFFFF" filter="url(#kzs-inner)"></path>
+<g fill="none" stroke="#D3D7DE" stroke-width="20" stroke-linecap="round" stroke-linejoin="round">
+<path d="M212 292 L212 212 L292 212"></path>
+<path d="M732 212 L812 212 L812 292"></path>
+<path d="M812 732 L812 812 L732 812"></path>
+<path d="M292 812 L212 812 L212 732"></path>
+</g>
+<g stroke="#D3D7DE" stroke-width="10" stroke-linecap="round" opacity="0.7">
+<path d="M512 178 L512 222"></path>
+<path d="M512 802 L512 846"></path>
+<path d="M178 512 L222 512"></path>
+<path d="M802 512 L846 512"></path>
+</g>
+<rect x="262" y="272" width="500" height="480" rx="36" fill="#FFFFFF" stroke="#D3D7DE" stroke-width="6" filter="url(#kzs-win)"></rect>
+<path d="M265 346 L759 346" stroke="#D3D7DE" stroke-width="6"></path>
+<g fill="#D3D7DE">
+<circle cx="308" cy="309" r="12"></circle>
+<circle cx="344" cy="309" r="12"></circle>
+<circle cx="380" cy="309" r="12"></circle>
+</g>
+<rect x="420" y="294" width="314" height="30" rx="15" fill="#EEF0F3"></rect>
+<path transform="translate(10 -22)" d="M352 640 C368 590 388 536 410 504 C428 544 444 600 460 648 C478 600 496 540 514 504 C532 546 548 600 564 646 C582 600 600 544 620 506 C632 530 642 556 650 574" fill="none" stroke="url(#kzs-ink)" stroke-width="44" stroke-linecap="round" stroke-linejoin="round" filter="url(#kzs-ink-shadow)"></path>
+</g>
+<path d="M101.5 352 C101.5 159 159 101.5 352 101.5 L672 101.5 C865 101.5 922.5 159 922.5 352 L922.5 672 C922.5 865 865 922.5 672 922.5 L352 922.5 C159 922.5 101.5 865 101.5 672 Z" fill="none" stroke="url(#kzs-rim)" stroke-width="3"></path>
+</svg>

@@ -1,0 +1,9 @@
+.build/
+build/
+*.dmg
+.DS_Store
+xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+
+# Local design source (raw export), SVG in Assets/ is the clean source
+Kritz App Icon.html

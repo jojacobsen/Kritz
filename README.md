@@ -15,6 +15,10 @@ No cloud. No login. No subscription. Capture → mark up → copy or save. Done.
 
 [**Download**](../../releases/latest) · [Features](#features) · [Build from source](#building-from-source) · [Roadmap](#roadmap)
 
+<br>
+
+<img src="docs/screenshot.png" width="820" alt="Kritz editor with the capture bar, tool palette and a screenshot open" />
+
 </div>
 
 ---

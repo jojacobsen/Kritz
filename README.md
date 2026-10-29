@@ -4,7 +4,7 @@
 
 # Kritz
 
-**A lightweight, native screenshot annotation app for macOS — an open-source replacement for the discontinued Skitch.**
+**A lightweight, native screenshot annotation app for macOS. An open-source replacement for the discontinued Skitch.**
 
 No cloud. No login. No subscription. Capture → mark up → copy or save. Done.
 
@@ -21,26 +21,26 @@ No cloud. No login. No subscription. Capture → mark up → copy or save. Done.
 
 ## Why
 
-[Skitch](https://en.wikipedia.org/wiki/Skitch) hasn't been meaningfully updated since 2020. It only runs under Rosetta on Apple Silicon and relied on an Evernote account. Kritz brings back the workflow a lot of people used every day — grab a region, slap an arrow or some text on it, copy it — as a small, fast, **fully native** app that keeps everything on your Mac.
+[Skitch](https://en.wikipedia.org/wiki/Skitch) hasn't been meaningfully updated since 2020. It only runs under Rosetta on Apple Silicon and relied on an Evernote account. Kritz brings back the workflow a lot of people used every day (grab a region, slap an arrow or some text on it, copy it) as a small, fast, **fully native** app that keeps everything on your Mac.
 
 ## Features
 
-- **Own crosshair capture overlay** — dims the screen, shows live dimensions, `Esc` cancels. Kritz moves itself out of the way so it never covers your shot.
-- **Timed capture** — draw the region first, then a visible countdown runs (time to open a menu, hover a tooltip, …) with a tick sound, then it fires.
-- **Annotate** — arrow, text, rectangle, ellipse, highlighter, and a freehand-friendly toolset.
-- **Select tool** — click a placed element to **move and resize** it (arrows get start/end handles), `⌫` deletes.
-- **Copy & paste** — `⌘C` copies the result; `⌘V` pastes an image from the clipboard as a movable element.
+- **Own crosshair capture overlay**: dims the screen, shows live dimensions, `Esc` cancels. Kritz moves itself out of the way so it never covers your shot.
+- **Timed capture**: draw the region first, then a visible countdown runs (time to open a menu, hover a tooltip, and so on) with a tick sound, then it fires.
+- **Annotate**: arrow, text, rectangle, ellipse, highlighter, and a freehand-friendly toolset.
+- **Select tool**: click a placed element to **move and resize** it (arrows get start/end handles), `⌫` deletes.
+- **Copy & paste**: `⌘C` copies the result; `⌘V` pastes an image from the clipboard as a movable element.
 - **Step counter badges**, **ruler / measuring tool** (px), and **spotlight** to focus attention.
-- **Color eyedropper** — pick any on-screen color as the draw color (HEX also goes to the clipboard).
+- **Color eyedropper**: pick any on-screen color as the draw color (HEX also goes to the clipboard).
 - **OCR** (Apple Vision, offline) and **QR code reading** (CoreImage) straight from the screenshot.
 - **Pixelate** sensitive information (CoreImage).
 - **Crop** with a Skitch-style frame: 8 handles, rule-of-thirds grid, live dimensions, Apply/Cancel (`⏎` / `Esc`).
 - **Draw past the edge** and the canvas grows with a white background instead of clipping.
 - **Full undo/redo** for annotations *and* crop (`⌘Z` / `⇧⌘Z`).
 - **Shutter sound** on capture, **repeat last area** (`⇧⌘R`), **PNG & JPEG export**.
-- **Tidy UI** — a top bar (highlighted, centered capture + timer, undo/redo, copy/save) and a left tool palette, with the screenshot centered.
-- **15 languages** — en, de, es, fr, it, pt-BR, nl, ru, zh-Hans/Hant, ja, ko, ar, hi, tr, pl. Kritz follows your system language.
-- **Native Apple Silicon** (arm64), built in Swift/AppKit — not Electron.
+- **Tidy UI**: a top bar (highlighted, centered capture + timer, undo/redo, copy/save) and a left tool palette, with the screenshot centered.
+- **15 languages**: en, de, es, fr, it, pt-BR, nl, ru, zh-Hans/Hant, ja, ko, ar, hi, tr, pl. Kritz follows your system language.
+- **Native Apple Silicon** (arm64), built in Swift/AppKit, not Electron.
 
 ## Requirements
 

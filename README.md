@@ -53,11 +53,7 @@ No cloud. No login. No subscription. Capture → mark up → copy or save. Done.
 2. Open the DMG and drag **Kritz** into **Applications**.
 3. Launch it. On first run macOS asks for the **Screen Recording** permission (needed to capture). Grant it under *System Settings → Privacy & Security → Screen Recording*, then relaunch Kritz.
 
-> **Gatekeeper note:** the current builds are ad-hoc signed, not yet notarized by Apple, so macOS may say *"Apple could not verify Kritz.app is free of malware."* Two options:
-> - **Click:** try to open it, then go to *System Settings → Privacy & Security*, scroll down and click **Open Anyway**.
-> - **Terminal:** `xattr -dr com.apple.quarantine /Applications/Kritz.app`, then open normally.
->
-> (A notarized build — no warning at all — is on the roadmap.)
+The release DMG is **signed with a Developer ID and notarized by Apple**, so it opens without any Gatekeeper warning.
 
 ## Building from source
 
@@ -116,7 +112,7 @@ UI strings go through the `L(...)` helper. Translations live in `Localization/<l
 
 ## Roadmap
 
-- [ ] Developer ID signing + Apple notarization (clean Gatekeeper install)
+- [x] Developer ID signing + Apple notarization (clean Gatekeeper install)
 - [ ] Multi-monitor selection (one overlay per screen)
 - [ ] Global hotkey (capture system-wide, even when Kritz isn't focused)
 - [ ] Menu-bar app mode (`LSUIElement`)

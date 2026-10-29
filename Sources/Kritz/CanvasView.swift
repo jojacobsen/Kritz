@@ -26,9 +26,10 @@ final class CanvasView: NSView {
     var currentColor: NSColor = CanvasView.accent
     var currentLineWidth: CGFloat = 4
 
-    /// True once the document has edits that haven't been saved to disk yet.
-    /// Set on every undoable change; cleared after a successful save.
-    var isDirty = false
+    /// True while the screenshot has unsaved work. A fresh capture starts dirty
+    /// (it exists only in the window); it is set again on every edit and cleared
+    /// after the image is saved to disk or copied to the clipboard.
+    var isDirty = true
 
     /// Called after the canvas dimensions change (crop or auto-grow), so the window re-fits.
     var onCanvasResized: (() -> Void)?
@@ -846,6 +847,7 @@ final class CanvasView: NSView {
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
         pasteboard.writeObjects([exportImage()])
+        isDirty = false
     }
 
     @objc func paste(_ sender: Any?) {

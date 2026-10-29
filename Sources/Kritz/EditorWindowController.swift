@@ -540,6 +540,7 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
         pasteboard.writeObjects([canvas.exportImage()])
+        canvas.isDirty = false
     }
 
     @objc func printDocument(_ sender: Any?) {
@@ -614,8 +615,8 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
     func windowShouldClose(_ sender: NSWindow) -> Bool {
         if forceClose || !canvas.isDirty { return true }
         let alert = NSAlert()
-        alert.messageText = L("Save changes before closing?")
-        alert.informativeText = L("Your annotations will be lost if you don't save them.")
+        alert.messageText = L("Save this screenshot before closing?")
+        alert.informativeText = L("If you don't save it, it will be lost.")
         alert.addButton(withTitle: L("Save"))         // first = default (rightmost)
         alert.addButton(withTitle: L("Cancel"))       // Esc
         alert.addButton(withTitle: L("Don't Save"))   // leftmost

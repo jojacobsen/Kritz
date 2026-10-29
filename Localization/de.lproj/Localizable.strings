@@ -47,3 +47,5 @@
 "Print…" = "Drucken …";
 "No cloud, no login, no subscription." = "Keine Cloud, kein Login, kein Abo.";
 "A lightweight, native screenshot annotation app for macOS. An open-source replacement for the discontinued Skitch." = "Eine schlanke, native Screenshot-Annotations-App für macOS. Ein quelloffener Ersatz für das eingestellte Skitch.";
+"Save this screenshot before closing?" = "Diesen Screenshot vor dem Schließen sichern?";
+"If you don't save it, it will be lost." = "Wenn du ihn nicht sicherst, geht er verloren.";

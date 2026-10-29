@@ -13,7 +13,7 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
     private let scrollView = NSScrollView()
     private var toolButtons: [NSButton] = []
     private let lineWidths: [CGFloat] = [2, 4, 8, 14]
-    private let lineWidthButton = NSButton()
+    private let lineWidthButton = HoverButton()
     private let colorWell = NSColorWell()
 
     private let zoomLabel = NSTextField(labelWithString: "")
@@ -34,6 +34,7 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
             defer: false
         )
         window.title = "Kritz"
+        window.contentMinSize = NSSize(width: 520, height: 400)
         window.center()
         window.isReleasedWhenClosed = false
 
@@ -150,8 +151,23 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
                               action: #selector(copyImage(_:)), target: self)
         let save = iconButton(symbol: "square.and.arrow.down", fallback: "▼", tip: L("Save"),
                               action: #selector(saveDocument(_:)), target: self)
-        [undo, redo, copy, save].forEach { stack.addView($0, in: .trailing) }
+        [undo, redo].forEach { stack.addView($0, in: .trailing) }
+        stack.addView(verticalDivider(height: 22), in: .trailing)
+        [copy, save].forEach { stack.addView($0, in: .trailing) }
         return bar
+    }
+
+    /// A short vertical hairline used to group buttons inside a horizontal stack.
+    private func verticalDivider(height: CGFloat) -> NSView {
+        let line = NSView()
+        line.wantsLayer = true
+        line.layer?.backgroundColor = NSColor.separatorColor.cgColor
+        line.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            line.widthAnchor.constraint(equalToConstant: 1),
+            line.heightAnchor.constraint(equalToConstant: height)
+        ])
+        return line
     }
 
     /// A 1pt hairline as a plain frame-based view. Deliberately NOT Auto Layout:
@@ -225,6 +241,8 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
             let b = toolButton(symbol: symbol, fallback: fallback, tag: tool.rawValue, tip: tip)
             toolButtons.append(b)
             stack.addArrangedSubview(b)
+            // Group the Select tool apart from the drawing tools.
+            if tool == .select { stack.addArrangedSubview(separator()) }
         }
 
         stack.addArrangedSubview(separator())
@@ -322,8 +340,8 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
         return out
     }
 
-    private func baseButton(tip: String) -> NSButton {
-        let b = NSButton()
+    private func baseButton(tip: String) -> HoverButton {
+        let b = HoverButton()
         b.isBordered = false
         b.bezelStyle = .regularSquare
         b.setButtonType(.momentaryChange)
@@ -361,10 +379,10 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
         b.target = target
         b.action = action
         if filled {
-            b.layer?.backgroundColor = NSColor.controlAccentColor.cgColor
+            b.restingColor = .controlAccentColor
             b.contentTintColor = .white
         } else {
-            b.layer?.backgroundColor = NSColor.controlAccentColor.withAlphaComponent(0.15).cgColor
+            b.restingColor = NSColor.controlAccentColor.withAlphaComponent(0.15)
             b.contentTintColor = .controlAccentColor
         }
         return b
@@ -424,9 +442,9 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
     private func highlightSelectedTool() {
         for button in toolButtons {
             let on = button.tag == canvas.currentTool.rawValue
-            button.layer?.backgroundColor = on
-                ? NSColor.controlAccentColor.withAlphaComponent(0.18).cgColor
-                : NSColor.clear.cgColor
+            (button as? HoverButton)?.restingColor = on
+                ? NSColor.controlAccentColor.withAlphaComponent(0.18)
+                : .clear
             button.contentTintColor = on ? .controlAccentColor : .secondaryLabelColor
         }
     }
@@ -524,6 +542,24 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
         pasteboard.writeObjects([canvas.exportImage()])
     }
 
+    @objc func printDocument(_ sender: Any?) {
+        guard let window else { return }
+        let size = canvas.pixelSize
+        let imageView = NSImageView(frame: NSRect(origin: .zero, size: size))
+        imageView.image = canvas.exportImage()
+        imageView.imageScaling = .scaleProportionallyUpOrDown
+
+        let info = NSPrintInfo.shared
+        info.horizontalPagination = .fit
+        info.verticalPagination = .fit
+        info.orientation = size.width >= size.height ? .landscape : .portrait
+        info.isHorizontallyCentered = true
+        info.isVerticallyCentered = true
+
+        let op = NSPrintOperation(view: imageView, printInfo: info)
+        op.runModal(for: window, delegate: nil, didRun: nil, contextInfo: nil)
+    }
+
     @objc func saveDocument(_ sender: Any?) { save() }
 
     /// Presents the save sheet. Calls `completion(true)` once the file is written.
@@ -602,6 +638,38 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
 
     func windowWillClose(_ notification: Notification) {
         onClose?(self)
+    }
+}
+
+/// A borderless icon button with a subtle hover highlight, for a livelier toolbar.
+final class HoverButton: NSButton {
+    /// The background shown when the pointer is not over the button
+    /// (clear for normal tools, an accent tint when selected/primary).
+    var restingColor: NSColor = .clear {
+        didSet { if !hovering { layer?.backgroundColor = restingColor.cgColor } }
+    }
+    private var hovering = false
+
+    override func updateTrackingAreas() {
+        super.updateTrackingAreas()
+        for area in trackingAreas { removeTrackingArea(area) }
+        addTrackingArea(NSTrackingArea(
+            rect: bounds,
+            options: [.mouseEnteredAndExited, .activeInActiveApp, .inVisibleRect],
+            owner: self))
+    }
+
+    override func mouseEntered(with event: NSEvent) {
+        hovering = true
+        let hover = restingColor.alphaComponent < 0.05
+            ? NSColor.labelColor.withAlphaComponent(0.08)
+            : (restingColor.blended(withFraction: 0.15, of: .white) ?? restingColor)
+        layer?.backgroundColor = hover.cgColor
+    }
+
+    override func mouseExited(with event: NSEvent) {
+        hovering = false
+        layer?.backgroundColor = restingColor.cgColor
     }
 }
 

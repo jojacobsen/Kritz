@@ -57,6 +57,37 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.activate(ignoringOtherApps: true)
     }
 
+    // MARK: - About
+
+    @objc func showAbout(_ sender: Any?) {
+        let body = NSMutableParagraphStyle()
+        body.alignment = .center
+        body.lineSpacing = 2
+
+        let credits = NSMutableAttributedString()
+        func line(_ text: String, size: CGFloat = 11, color: NSColor = .labelColor) {
+            credits.append(NSAttributedString(string: text, attributes: [
+                .font: NSFont.systemFont(ofSize: size),
+                .foregroundColor: color,
+                .paragraphStyle: body
+            ]))
+        }
+
+        line(L("A lightweight, native screenshot annotation app for macOS. An open-source replacement for the discontinued Skitch.") + "\n\n")
+        line(L("No cloud, no login, no subscription.") + "\n\n", color: .secondaryLabelColor)
+        line("MIT License · © 2026 Johannes Jacob\n", size: 10, color: .secondaryLabelColor)
+
+        let link = "https://github.com/jojacobsen/Kritz"
+        credits.append(NSAttributedString(string: link, attributes: [
+            .font: NSFont.systemFont(ofSize: 11),
+            .link: URL(string: link)!,
+            .paragraphStyle: body
+        ]))
+
+        NSApp.orderFrontStandardAboutPanel(options: [.credits: credits])
+        NSApp.activate(ignoringOtherApps: true)
+    }
+
     // MARK: - Menu
 
     private func setupMenu() {
@@ -67,7 +98,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         mainMenu.addItem(appItem)
         let appMenu = NSMenu()
         appItem.submenu = appMenu
-        appMenu.addItem(withTitle: L("About Kritz"), action: nil, keyEquivalent: "")
+        let about = NSMenuItem(title: L("About Kritz"), action: #selector(showAbout(_:)), keyEquivalent: "")
+        about.target = self
+        appMenu.addItem(about)
         appMenu.addItem(.separator())
         appMenu.addItem(withTitle: L("Hide Kritz"),
                         action: #selector(NSApplication.hide(_:)), keyEquivalent: "h")
@@ -101,6 +134,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         fileMenu.addItem(NSMenuItem(title: L("Save…"),
                                     action: #selector(EditorWindowController.saveDocument(_:)),
                                     keyEquivalent: "s"))
+        fileMenu.addItem(NSMenuItem(title: L("Print…"),
+                                    action: #selector(EditorWindowController.printDocument(_:)),
+                                    keyEquivalent: "p"))
 
         // Edit menu
         let editItem = NSMenuItem()

@@ -44,3 +44,6 @@
 "Save changes before closing?" = "Änderungen vor dem Schließen sichern?";
 "Your annotations will be lost if you don't save them." = "Deine Anmerkungen gehen verloren, wenn du sie nicht sicherst.";
 "Don't Save" = "Nicht sichern";
+"Print…" = "Drucken …";
+"No cloud, no login, no subscription." = "Keine Cloud, kein Login, kein Abo.";
+"A lightweight, native screenshot annotation app for macOS. An open-source replacement for the discontinued Skitch." = "Eine schlanke, native Screenshot-Annotations-App für macOS. Ein quelloffener Ersatz für das eingestellte Skitch.";

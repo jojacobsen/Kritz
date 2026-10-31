@@ -41,3 +41,6 @@
 "No QR code found" = "QR kodu bulunamadı";
 "Copied to clipboard" = "Panoya kopyalandı";
 "Select" = "Seç";
+"Save the current screenshot?" = "Mevcut ekran görüntüsü kaydedilsin mi?";
+"If you don't save it, the new screenshot will replace it." = "Kaydetmezseniz, yeni ekran görüntüsü bunun yerini alacak.";
+"Replace" = "Değiştir";

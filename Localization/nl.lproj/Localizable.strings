@@ -41,3 +41,6 @@
 "No QR code found" = "Geen QR-code gevonden";
 "Copied to clipboard" = "Gekopieerd naar klembord";
 "Select" = "Selecteren";
+"Save the current screenshot?" = "Huidige schermafbeelding bewaren?";
+"If you don't save it, the new screenshot will replace it." = "Als je deze niet bewaart, wordt deze vervangen door de nieuwe schermafbeelding.";
+"Replace" = "Vervangen";

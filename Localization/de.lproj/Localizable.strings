@@ -49,3 +49,6 @@
 "A lightweight, native screenshot annotation app for macOS. An open-source replacement for the discontinued Skitch." = "Eine schlanke, native Screenshot-Annotations-App für macOS. Ein quelloffener Ersatz für das eingestellte Skitch.";
 "Save this screenshot before closing?" = "Diesen Screenshot vor dem Schließen sichern?";
 "If you don't save it, it will be lost." = "Wenn du ihn nicht sicherst, geht er verloren.";
+"Save the current screenshot?" = "Aktuellen Screenshot sichern?";
+"If you don't save it, the new screenshot will replace it." = "Wenn du ihn nicht sicherst, wird er durch den neuen Screenshot ersetzt.";
+"Replace" = "Ersetzen";

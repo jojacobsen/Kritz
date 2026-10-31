@@ -41,3 +41,6 @@
 "No QR code found" = "Nie znaleziono kodu QR";
 "Copied to clipboard" = "Skopiowano do schowka";
 "Select" = "Zaznacz";
+"Save the current screenshot?" = "Zapisać bieżący zrzut ekranu?";
+"If you don't save it, the new screenshot will replace it." = "Jeśli go nie zapiszesz, zostanie zastąpiony nowym zrzutem ekranu.";
+"Replace" = "Zastąp";

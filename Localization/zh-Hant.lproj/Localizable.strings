@@ -41,3 +41,6 @@
 "No QR code found" = "找不到 QR 碼";
 "Copied to clipboard" = "已拷貝到剪貼板";
 "Select" = "選取";
+"Save the current screenshot?" = "儲存目前的螢幕截圖？";
+"If you don't save it, the new screenshot will replace it." = "如果不儲存，新的螢幕截圖將取代它。";
+"Replace" = "取代";

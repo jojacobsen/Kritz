@@ -41,3 +41,6 @@
 "No QR code found" = "QR-код не найден";
 "Copied to clipboard" = "Скопировано в буфер обмена";
 "Select" = "Выбрать";
+"Save the current screenshot?" = "Сохранить текущий снимок экрана?";
+"If you don't save it, the new screenshot will replace it." = "Если вы не сохраните его, он будет заменён новым снимком экрана.";
+"Replace" = "Заменить";

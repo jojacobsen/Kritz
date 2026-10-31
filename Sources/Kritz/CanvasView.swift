@@ -85,6 +85,38 @@ final class CanvasView: NSView {
     @available(*, unavailable)
     required init?(coder: NSCoder) { fatalError("init(coder:) is not supported") }
 
+    /// Replaces the screenshot with a freshly captured one, discarding every annotation,
+    /// the undo/redo history, any crop and selection. The canvas returns to a clean
+    /// "fresh capture" state (dirty, since it only lives in the window so far). Lets the
+    /// editor reuse one window across captures instead of opening a new one each time.
+    func loadImage(_ newImage: NSImage) {
+        if let field = activeTextField { field.removeFromSuperview(); activeTextField = nil }
+        image = newImage
+        if let rep = newImage.representations.compactMap({ $0 as? NSBitmapImageRep }).first {
+            imagePixelSize = CGSize(width: rep.pixelsWide, height: rep.pixelsHigh)
+        } else {
+            imagePixelSize = newImage.size
+        }
+        imageOrigin = .zero
+        pixelSize = imagePixelSize
+        annotations.removeAll()
+        draft = nil
+        undoStack.removeAll()
+        redoStack.removeAll()
+        cropRect = nil
+        cropDrawing = false
+        cropDragHandle = nil
+        selectedIndex = nil
+        activeDrag = nil
+        cachedPixelated = nil
+        isDirty = true
+        frame = NSRect(origin: .zero, size: pixelSize)
+        invalidateIntrinsicContentSize()
+        onCropStateChanged?(false)
+        onCanvasResized?()
+        needsDisplay = true
+    }
+
     override var isFlipped: Bool { false }
     override var intrinsicContentSize: NSSize { pixelSize }
     override var acceptsFirstResponder: Bool { true }

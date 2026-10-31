@@ -41,3 +41,6 @@
 "No QR code found" = "कोई QR कोड नहीं मिला";
 "Copied to clipboard" = "क्लिपबोर्ड पर कॉपी किया गया";
 "Select" = "चुनें";
+"Save the current screenshot?" = "वर्तमान स्क्रीनशॉट सहेजें?";
+"If you don't save it, the new screenshot will replace it." = "यदि आप इसे सहेजते नहीं हैं, तो नया स्क्रीनशॉट इसे बदल देगा।";
+"Replace" = "बदलें";

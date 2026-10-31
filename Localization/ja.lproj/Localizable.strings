@@ -41,3 +41,6 @@
 "No QR code found" = "QRコードが見つかりません";
 "Copied to clipboard" = "クリップボードにコピーしました";
 "Select" = "選択";
+"Save the current screenshot?" = "現在のスクリーンショットを保存しますか？";
+"If you don't save it, the new screenshot will replace it." = "保存しない場合、新しいスクリーンショットに置き換えられます。";
+"Replace" = "置き換える";

@@ -2,7 +2,9 @@ import AppKit
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
 
-    private var editors: [EditorWindowController] = []
+    /// Kritz keeps a single editor window and reuses it for every capture, so a run of
+    /// screenshots doesn't pile up (or need closing) one window at a time.
+    private var editor: EditorWindowController?
     private let capture = CaptureController()
 
     static let timerPresets = [3, 5, 10]
@@ -36,24 +38,28 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         withWindowsHidden { [weak self] done in self?.capture.repeatLast(completion: done) }
     }
 
-    /// Hides Kritz's windows for the duration of a capture so they don't cover the shot.
+    /// Hides Kritz's window for the duration of a capture so it doesn't cover the shot.
     private func withWindowsHidden(_ work: (@escaping (NSImage?) -> Void) -> Void) {
-        let toRestore = editors.filter { $0.window?.isVisible == true }
-        toRestore.forEach { $0.window?.orderOut(nil) }
+        let wasVisible = editor?.window?.isVisible == true
+        if wasVisible { editor?.window?.orderOut(nil) }
         work { [weak self] image in
-            toRestore.forEach { $0.window?.orderFront(nil) }
+            if wasVisible { self?.editor?.window?.orderFront(nil) }
             self?.handleCaptured(image)
         }
     }
 
     private func handleCaptured(_ image: NSImage?) {
         guard let image else { return } // nil = cancelled
-        let editor = EditorWindowController(image: image)
-        editor.onClose = { [weak self] controller in
-            self?.editors.removeAll { $0 === controller }
+        if let editor {
+            // Reuse the open window; it prompts to save unsaved work before replacing.
+            editor.showWindow(nil)
+            editor.loadCapture(image)
+        } else {
+            let editor = EditorWindowController(image: image)
+            editor.onClose = { [weak self] _ in self?.editor = nil }
+            self.editor = editor
+            editor.showWindow(nil)
         }
-        editors.append(editor)
-        editor.showWindow(nil)
         NSApp.activate(ignoringOtherApps: true)
     }
 

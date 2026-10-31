@@ -561,6 +561,45 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
         op.runModal(for: window, delegate: nil, didRun: nil, contextInfo: nil)
     }
 
+    // MARK: - Reusing one window across captures
+
+    /// Loads a freshly captured screenshot into this existing window instead of opening
+    /// another one. If the current screenshot still has unsaved work, the user is asked
+    /// whether to save it, replace it, or cancel (keeping the current screenshot and
+    /// discarding the new capture).
+    func loadCapture(_ image: NSImage) {
+        canvas.commitTextEditing()
+        canvas.cancelCrop()
+        guard canvas.isDirty, let window else {
+            replaceImage(with: image)
+            return
+        }
+        let alert = NSAlert()
+        alert.messageText = L("Save the current screenshot?")
+        alert.informativeText = L("If you don't save it, the new screenshot will replace it.")
+        alert.addButton(withTitle: L("Save"))       // first = default (rightmost)
+        alert.addButton(withTitle: L("Cancel"))     // Esc
+        alert.addButton(withTitle: L("Replace"))    // leftmost
+        alert.beginSheetModal(for: window) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .alertFirstButtonReturn: // Save the current one, then load the new capture
+                self.save { ok in if ok { self.replaceImage(with: image) } }
+            case .alertThirdButtonReturn: // Replace: discard the current screenshot
+                self.replaceImage(with: image)
+            default:
+                break // Cancel: keep the current screenshot, drop the new capture
+            }
+        }
+    }
+
+    private func replaceImage(with image: NSImage) {
+        canvas.loadImage(image)
+        canvas.clearSelection()
+        window?.makeFirstResponder(canvas)
+        DispatchQueue.main.async { [weak self] in self?.zoomToFit() }
+    }
+
     @objc func saveDocument(_ sender: Any?) { save() }
 
     /// Presents the save sheet. Calls `completion(true)` once the file is written.

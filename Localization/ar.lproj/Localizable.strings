@@ -41,3 +41,6 @@
 "No QR code found" = "لم يُعثر على رمز QR";
 "Copied to clipboard" = "تم النسخ إلى الحافظة";
 "Select" = "تحديد";
+"Save the current screenshot?" = "هل تريد حفظ لقطة الشاشة الحالية؟";
+"If you don't save it, the new screenshot will replace it." = "إذا لم تحفظها، ستحل لقطة الشاشة الجديدة محلها.";
+"Replace" = "استبدال";

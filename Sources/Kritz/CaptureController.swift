@@ -11,35 +11,57 @@ final class CaptureController {
 
     private var selection: SelectionOverlay?
     private var lastRect: CGRect?
-    private var lastScreen: NSScreen?
 
     var canRepeat: Bool { lastRect != nil }
 
     /// `delay` in seconds; 0 = capture immediately after the region is chosen.
     /// The selection overlay itself runs the countdown (keeping the region bright), so by the
-    /// time we get `rect` back the countdown has already finished.
+    /// time we get `rect` back the countdown has already finished. `rect` is in global screen
+    /// coordinates, so the region can be picked on any connected display.
     func capture(delay: TimeInterval, completion: @escaping (NSImage?) -> Void) {
-        let screen = NSScreen.main ?? NSScreen.screens.first!
         let overlay = SelectionOverlay()
         selection = overlay
-        overlay.begin(on: screen, delay: delay) { [weak self] rect in
+        overlay.begin(delay: delay) { [weak self] rect in
             self?.selection = nil
             guard let rect else { completion(nil); return } // cancelled
             self?.lastRect = rect
-            self?.lastScreen = screen
-            self?.grab(rect: rect, screen: screen, completion: completion)
+            self?.grab(globalRect: rect, completion: completion)
         }
     }
 
     /// Re-captures the most recently selected region without asking again.
     func repeatLast(completion: @escaping (NSImage?) -> Void) {
-        guard let rect = lastRect, let screen = lastScreen else { completion(nil); return }
-        grab(rect: rect, screen: screen, completion: completion)
+        guard let rect = lastRect else { completion(nil); return }
+        grab(globalRect: rect, completion: completion)
     }
 
-    private func grab(rect: CGRect, screen: NSScreen, completion: @escaping (NSImage?) -> Void) {
+    /// The display the selection falls on the most (selections that straddle two monitors
+    /// are captured from whichever one holds the larger part).
+    private func screen(for globalRect: CGRect) -> NSScreen? {
+        NSScreen.screens.max {
+            $0.frame.intersection(globalRect).area < $1.frame.intersection(globalRect).area
+        } ?? NSScreen.main
+    }
+
+    /// `screencapture -D` index for a screen (1 = main, 2 = secondary …). Mapped via the
+    /// active display list, whose first entry is the main display — matching `-D`'s numbering.
+    private func displayNumber(for screen: NSScreen) -> Int? {
+        guard let id = screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? CGDirectDisplayID
+        else { return nil }
+        var count: UInt32 = 0
+        guard CGGetActiveDisplayList(0, nil, &count) == .success, count > 0 else { return nil }
+        var ids = [CGDirectDisplayID](repeating: 0, count: Int(count))
+        guard CGGetActiveDisplayList(count, &ids, &count) == .success else { return nil }
+        return ids.firstIndex(of: id).map { $0 + 1 }
+    }
+
+    private func grab(globalRect: CGRect, completion: @escaping (NSImage?) -> Void) {
+        guard let screen = screen(for: globalRect) else { completion(nil); return }
         let scale = screen.backingScaleFactor
         let screenHeight = screen.frame.height
+        // Region relative to the target screen's own bottom-left origin.
+        let rect = globalRect.offsetBy(dx: -screen.frame.minX, dy: -screen.frame.minY)
+        let displayArgs = displayNumber(for: screen).map { ["-D", "\($0)"] } ?? []
         let tmpURL = URL(fileURLWithPath: NSTemporaryDirectory())
             .appendingPathComponent("kritz-\(UUID().uuidString).png")
 
@@ -48,7 +70,7 @@ final class CaptureController {
             let process = Process()
             process.executableURL = URL(fileURLWithPath: "/usr/sbin/screencapture")
             // No -x: let screencapture play the native shutter sound on capture.
-            process.arguments = [tmpURL.path] // full main display
+            process.arguments = displayArgs + [tmpURL.path] // full target display
 
             process.terminationHandler = { _ in
                 DispatchQueue.main.async {

@@ -53,4 +53,7 @@ extension NSRect {
                   width: abs(a.x - b.x),
                   height: abs(a.y - b.y))
     }
+
+    /// Area in square points; `.null`/empty rects count as zero.
+    var area: CGFloat { isNull || isEmpty ? 0 : width * height }
 }

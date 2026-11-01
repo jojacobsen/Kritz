@@ -45,3 +45,13 @@
 "Save the current screenshot?" = "保存当前截图？";
 "If you don't save it, the new screenshot will replace it." = "如果不保存，新截图将取代它。";
 "Replace" = "替换";
+
+/* Capture / save error messages (added 0.1.6) */
+"Could not save the screenshot" = "无法存储屏幕快照";
+"The image could not be written. Please try a different location or format." = "无法写入图像。请尝试其他位置或格式。";
+"Could not export the image" = "无法导出图像";
+"Kritz needs Screen Recording permission" = "Kritz 需要“屏幕录制”权限";
+"To capture your screen, enable Kritz under System Settings → Privacy & Security → Screen Recording, then try again." = "若要捕捉屏幕，请在“系统设置”→“隐私与安全性”→“屏幕录制”中启用 Kritz，然后重试。";
+"Open System Settings" = "打开系统设置";
+"Screenshot failed" = "屏幕快照失败";
+"The screen capture could not be completed. Please try again." = "无法完成屏幕捕捉。请重试。";

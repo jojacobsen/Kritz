@@ -45,3 +45,13 @@
 "Save the current screenshot?" = "Сохранить текущий снимок экрана?";
 "If you don't save it, the new screenshot will replace it." = "Если вы не сохраните его, он будет заменён новым снимком экрана.";
 "Replace" = "Заменить";
+
+/* Capture / save error messages (added 0.1.6) */
+"Could not save the screenshot" = "Не удалось сохранить снимок экрана";
+"The image could not be written. Please try a different location or format." = "Не удалось записать изображение. Попробуйте другое место или формат.";
+"Could not export the image" = "Не удалось экспортировать изображение";
+"Kritz needs Screen Recording permission" = "Kritz требуется разрешение на запись экрана";
+"To capture your screen, enable Kritz under System Settings → Privacy & Security → Screen Recording, then try again." = "Чтобы снять экран, включите Kritz в «Системные настройки» → «Конфиденциальность и безопасность» → «Запись экрана» и повторите попытку.";
+"Open System Settings" = "Открыть Системные настройки";
+"Screenshot failed" = "Не удалось сделать снимок экрана";
+"The screen capture could not be completed. Please try again." = "Не удалось выполнить захват экрана. Повторите попытку.";

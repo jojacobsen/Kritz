@@ -45,3 +45,13 @@
 "Save the current screenshot?" = "वर्तमान स्क्रीनशॉट सहेजें?";
 "If you don't save it, the new screenshot will replace it." = "यदि आप इसे सहेजते नहीं हैं, तो नया स्क्रीनशॉट इसे बदल देगा।";
 "Replace" = "बदलें";
+
+/* Capture / save error messages (added 0.1.6) */
+"Could not save the screenshot" = "स्क्रीनशॉट सहेजा नहीं जा सका";
+"The image could not be written. Please try a different location or format." = "छवि लिखी नहीं जा सकी. कृपया कोई दूसरा स्थान या फ़ॉर्मैट आज़माएँ.";
+"Could not export the image" = "छवि निर्यात नहीं की जा सकी";
+"Kritz needs Screen Recording permission" = "Kritz को स्क्रीन रिकॉर्डिंग की अनुमति चाहिए";
+"To capture your screen, enable Kritz under System Settings → Privacy & Security → Screen Recording, then try again." = "अपनी स्क्रीन कैप्चर करने के लिए, सिस्टम सेटिंग्स → गोपनीयता और सुरक्षा → स्क्रीन रिकॉर्डिंग में Kritz को सक्षम करें, फिर पुनः प्रयास करें.";
+"Open System Settings" = "सिस्टम सेटिंग्स खोलें";
+"Screenshot failed" = "स्क्रीनशॉट विफल";
+"The screen capture could not be completed. Please try again." = "स्क्रीन कैप्चर पूरा नहीं हो सका. कृपया पुनः प्रयास करें.";

@@ -44,25 +44,36 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func startCapture(after delay: TimeInterval) {
+        guard ensureScreenRecordingPermission() else { return }
         withWindowsHidden { done in capture.capture(delay: delay, completion: done) }
     }
 
     @objc func repeatLastCapture(_ sender: Any?) {
+        guard ensureScreenRecordingPermission() else { return }
         withWindowsHidden { [weak self] done in self?.capture.repeatLast(completion: done) }
     }
 
     /// Hides Kritz's window for the duration of a capture so it doesn't cover the shot.
-    private func withWindowsHidden(_ work: (@escaping (NSImage?) -> Void) -> Void) {
+    private func withWindowsHidden(_ work: (@escaping (CaptureResult) -> Void) -> Void) {
         let wasVisible = editor?.window?.isVisible == true
         if wasVisible { editor?.window?.orderOut(nil) }
-        work { [weak self] image in
+        work { [weak self] result in
             if wasVisible { self?.editor?.window?.orderFront(nil) }
-            self?.handleCaptured(image)
+            self?.handleCaptured(result)
         }
     }
 
-    private func handleCaptured(_ image: NSImage?) {
-        guard let image else { return } // nil = cancelled
+    private func handleCaptured(_ result: CaptureResult) {
+        let image: NSImage
+        switch result {
+        case .cancelled:
+            return
+        case .failed(let reason):
+            presentCaptureError(reason)
+            return
+        case .image(let captured):
+            image = captured
+        }
         if let editor {
             // Reuse the open window; it prompts to save unsaved work before replacing.
             editor.showWindow(nil)
@@ -74,6 +85,42 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             editor.showWindow(nil)
         }
         NSApp.activate(ignoringOtherApps: true)
+    }
+
+    // MARK: - Permission & errors
+
+    /// Returns true if Kritz may record the screen. On first denial it triggers the
+    /// system prompt and guides the user to System Settings instead of silently
+    /// producing a blank capture.
+    private func ensureScreenRecordingPermission() -> Bool {
+        if CGPreflightScreenCaptureAccess() { return true }
+        // Adds Kritz to the Screen Recording list / shows the system prompt.
+        CGRequestScreenCaptureAccess()
+        presentPermissionAlert()
+        return false
+    }
+
+    private func presentPermissionAlert() {
+        let alert = NSAlert()
+        alert.alertStyle = .warning
+        alert.messageText = L("Kritz needs Screen Recording permission")
+        alert.informativeText = L("To capture your screen, enable Kritz under System Settings → Privacy & Security → Screen Recording, then try again.")
+        alert.addButton(withTitle: L("Open System Settings"))
+        alert.addButton(withTitle: L("Cancel"))
+        NSApp.activate(ignoringOtherApps: true)
+        if alert.runModal() == .alertFirstButtonReturn,
+           let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture") {
+            NSWorkspace.shared.open(url)
+        }
+    }
+
+    private func presentCaptureError(_ reason: String?) {
+        let alert = NSAlert()
+        alert.alertStyle = .warning
+        alert.messageText = L("Screenshot failed")
+        alert.informativeText = reason ?? L("The screen capture could not be completed. Please try again.")
+        NSApp.activate(ignoringOtherApps: true)
+        alert.runModal()
     }
 
     // MARK: - About

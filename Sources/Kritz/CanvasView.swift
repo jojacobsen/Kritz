@@ -41,7 +41,7 @@ final class CanvasView: NSView {
     // Selection / move / resize (used by the Select tool)
     private enum DragKind { case move, point(isStart: Bool), corner(Corner) }
     private enum Corner { case bl, br, tl, tr }
-    private var selectedIndex: Int?
+    var selectedIndex: Int?
     private var activeDrag: DragKind?
     private var dragStartMouse: CGPoint = .zero
     private var dragStartAnnotation: Annotation?
@@ -428,16 +428,25 @@ final class CanvasView: NSView {
             }
         }
         // Delete / Backspace removes the selected element.
-        if currentTool == .select, let idx = selectedIndex,
+        if currentTool == .select, selectedIndex != nil,
            event.keyCode == 51 || event.keyCode == 117 {
-            pushUndo()
-            annotations.remove(at: idx)
-            selectedIndex = nil
-            needsDisplay = true
+            deleteSelectedAnnotation()
             return
         }
         if event.keyCode == 53 { selectedIndex = nil; needsDisplay = true } // Esc deselects
         super.keyDown(with: event)
+    }
+
+    /// Removes the currently selected annotation. Guards against a stale index:
+    /// undo/redo/crop can shrink (or empty) the array without the selection
+    /// following it, so the index is verified before `remove(at:)`.
+    func deleteSelectedAnnotation() {
+        if let idx = selectedIndex, annotations.indices.contains(idx) {
+            pushUndo()
+            annotations.remove(at: idx)
+        }
+        selectedIndex = nil
+        needsDisplay = true
     }
 
     override func resetCursorRects() {
@@ -567,6 +576,8 @@ final class CanvasView: NSView {
         imageOrigin = state.imageOrigin
         pixelSize = state.pixelSize
         annotations = state.annotations
+        // The restored array may not contain the previously selected index.
+        selectedIndex = nil
         cachedPixelated = nil
         frame = NSRect(origin: .zero, size: pixelSize)
         invalidateIntrinsicContentSize()
@@ -680,9 +691,9 @@ final class CanvasView: NSView {
         let clamped = rect.intersection(contentBounds)
         guard clamped.width > 4, clamped.height > 4 else { return }
 
-        let flat = exportImage()
         var proposed = NSRect(origin: .zero, size: pixelSize)
-        guard let cg = flat.cgImage(forProposedRect: &proposed, context: nil, hints: nil) else { return }
+        guard let flat = exportImage(),
+              let cg = flat.cgImage(forProposedRect: &proposed, context: nil, hints: nil) else { return }
 
         let scaleX = CGFloat(cg.width) / pixelSize.width
         let scaleY = CGFloat(cg.height) / pixelSize.height
@@ -699,6 +710,7 @@ final class CanvasView: NSView {
         imageOrigin = .zero
         pixelSize = newSize
         annotations.removeAll()
+        selectedIndex = nil
         cachedPixelated = nil
         frame = NSRect(origin: .zero, size: newSize)
         invalidateIntrinsicContentSize()
@@ -876,9 +888,10 @@ final class CanvasView: NSView {
     // MARK: - Clipboard
 
     @objc func copy(_ sender: Any?) {
+        guard let flat = exportImage() else { return }
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
-        pasteboard.writeObjects([exportImage()])
+        pasteboard.writeObjects([flat])
         isDirty = false
     }
 
@@ -901,14 +914,19 @@ final class CanvasView: NSView {
 
     // MARK: - Export
 
-    func exportImage() -> NSImage {
+    /// Flattens the image and annotations into a new NSImage.
+    /// Returns nil if the canvas has no valid pixel dimensions, so callers
+    /// surface an error instead of crashing on a degenerate size.
+    func exportImage() -> NSImage? {
         commitTextEditing()
-        let rep = NSBitmapImageRep(bitmapDataPlanes: nil,
-                                   pixelsWide: Int(pixelSize.width),
-                                   pixelsHigh: Int(pixelSize.height),
-                                   bitsPerSample: 8, samplesPerPixel: 4, hasAlpha: true,
-                                   isPlanar: false, colorSpaceName: .deviceRGB,
-                                   bytesPerRow: 0, bitsPerPixel: 0)!
+        guard pixelSize.width >= 1, pixelSize.height >= 1,
+              let rep = NSBitmapImageRep(bitmapDataPlanes: nil,
+                                         pixelsWide: Int(pixelSize.width),
+                                         pixelsHigh: Int(pixelSize.height),
+                                         bitsPerSample: 8, samplesPerPixel: 4, hasAlpha: true,
+                                         isPlanar: false, colorSpaceName: .deviceRGB,
+                                         bytesPerRow: 0, bitsPerPixel: 0)
+        else { return nil }
         rep.size = pixelSize
 
         NSGraphicsContext.saveGraphicsState()
@@ -925,18 +943,18 @@ final class CanvasView: NSView {
     }
 
     func exportPNGData() -> Data? {
-        exportImage().representations.compactMap { $0 as? NSBitmapImageRep }.first?
+        exportImage()?.representations.compactMap { $0 as? NSBitmapImageRep }.first?
             .representation(using: .png, properties: [:])
     }
 
     func exportJPEGData() -> Data? {
-        exportImage().representations.compactMap { $0 as? NSBitmapImageRep }.first?
+        exportImage()?.representations.compactMap { $0 as? NSBitmapImageRep }.first?
             .representation(using: .jpeg, properties: [.compressionFactor: 0.9])
     }
 
     /// Flattened image as CGImage – input for OCR / QR recognition.
     func flattenedCGImage() -> CGImage? {
         var rect = NSRect(origin: .zero, size: pixelSize)
-        return exportImage().cgImage(forProposedRect: &rect, context: nil, hints: nil)
+        return exportImage()?.cgImage(forProposedRect: &rect, context: nil, hints: nil)
     }
 }

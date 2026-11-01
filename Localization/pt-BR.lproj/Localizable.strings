@@ -45,3 +45,13 @@
 "Save the current screenshot?" = "Salvar a captura de tela atual?";
 "If you don't save it, the new screenshot will replace it." = "Se você não salvá-la, a nova captura de tela irá substituí-la.";
 "Replace" = "Substituir";
+
+/* Capture / save error messages (added 0.1.6) */
+"Could not save the screenshot" = "Não foi possível salvar a captura de tela";
+"The image could not be written. Please try a different location or format." = "Não foi possível gravar a imagem. Tente outro local ou formato.";
+"Could not export the image" = "Não foi possível exportar a imagem";
+"Kritz needs Screen Recording permission" = "O Kritz precisa de permissão para Gravação da tela";
+"To capture your screen, enable Kritz under System Settings → Privacy & Security → Screen Recording, then try again." = "Para capturar sua tela, ative o Kritz em Ajustes do Sistema → Privacidade e Segurança → Gravação da tela e tente novamente.";
+"Open System Settings" = "Abrir Ajustes do Sistema";
+"Screenshot failed" = "Falha na captura de tela";
+"The screen capture could not be completed. Please try again." = "Não foi possível concluir a captura de tela. Tente novamente.";

@@ -45,3 +45,13 @@
 "Save the current screenshot?" = "Huidige schermafbeelding bewaren?";
 "If you don't save it, the new screenshot will replace it." = "Als je deze niet bewaart, wordt deze vervangen door de nieuwe schermafbeelding.";
 "Replace" = "Vervangen";
+
+/* Capture / save error messages (added 0.1.6) */
+"Could not save the screenshot" = "Kan schermafbeelding niet bewaren";
+"The image could not be written. Please try a different location or format." = "De afbeelding kon niet worden weggeschreven. Probeer een andere locatie of indeling.";
+"Could not export the image" = "Kan afbeelding niet exporteren";
+"Kritz needs Screen Recording permission" = "Kritz heeft toestemming voor Schermopname nodig";
+"To capture your screen, enable Kritz under System Settings → Privacy & Security → Screen Recording, then try again." = "Om je scherm vast te leggen, schakel Kritz in via Systeeminstellingen → Privacy en beveiliging → Schermopname en probeer het opnieuw.";
+"Open System Settings" = "Systeeminstellingen openen";
+"Screenshot failed" = "Schermafbeelding mislukt";
+"The screen capture could not be completed. Please try again." = "De schermopname kon niet worden voltooid. Probeer het opnieuw.";

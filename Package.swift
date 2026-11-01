@@ -19,6 +19,11 @@ let package = Package(
                 // SwiftPM executables don't get this app-bundle rpath by default.
                 .unsafeFlags(["-Xlinker", "-rpath", "-Xlinker", "@executable_path/../Frameworks"])
             ]
+        ),
+        .testTarget(
+            name: "KritzTests",
+            dependencies: ["Kritz"],
+            path: "Tests/KritzTests"
         )
     ]
 )

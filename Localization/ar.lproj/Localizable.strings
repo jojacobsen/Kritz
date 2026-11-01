@@ -45,3 +45,13 @@
 "Save the current screenshot?" = "هل تريد حفظ لقطة الشاشة الحالية؟";
 "If you don't save it, the new screenshot will replace it." = "إذا لم تحفظها، ستحل لقطة الشاشة الجديدة محلها.";
 "Replace" = "استبدال";
+
+/* Capture / save error messages (added 0.1.6) */
+"Could not save the screenshot" = "تعذّر حفظ لقطة الشاشة";
+"The image could not be written. Please try a different location or format." = "تعذّرت كتابة الصورة. حاول استخدام موقع أو تنسيق آخر.";
+"Could not export the image" = "تعذّر تصدير الصورة";
+"Kritz needs Screen Recording permission" = "يحتاج Kritz إلى إذن تسجيل الشاشة";
+"To capture your screen, enable Kritz under System Settings → Privacy & Security → Screen Recording, then try again." = "لالتقاط شاشتك، فعّل Kritz من إعدادات النظام ← الخصوصية والأمان ← تسجيل الشاشة ثم حاول مرة أخرى.";
+"Open System Settings" = "فتح إعدادات النظام";
+"Screenshot failed" = "فشل التقاط الشاشة";
+"The screen capture could not be completed. Please try again." = "تعذّر إكمال التقاط الشاشة. حاول مرة أخرى.";

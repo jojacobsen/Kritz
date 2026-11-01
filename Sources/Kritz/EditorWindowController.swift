@@ -537,17 +537,19 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
     @objc func redo(_ sender: Any?) { canvas.redo() }
 
     @objc func copyImage(_ sender: Any?) {
+        guard let flat = canvas.exportImage() else { presentExportError(); return }
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
-        pasteboard.writeObjects([canvas.exportImage()])
+        pasteboard.writeObjects([flat])
         canvas.isDirty = false
     }
 
     @objc func printDocument(_ sender: Any?) {
         guard let window else { return }
+        guard let flat = canvas.exportImage() else { presentExportError(); return }
         let size = canvas.pixelSize
         let imageView = NSImageView(frame: NSRect(origin: .zero, size: size))
-        imageView.image = canvas.exportImage()
+        imageView.image = flat
         imageView.imageScaling = .scaleProportionallyUpOrDown
 
         let info = NSPrintInfo.shared
@@ -614,10 +616,35 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
             let ext = url.pathExtension.lowercased()
             let data = (ext == "jpg" || ext == "jpeg") ? canvas.exportJPEGData() : canvas.exportPNGData()
             var ok = false
-            if let data { ok = (try? data.write(to: url)) != nil }
-            if ok { canvas.isDirty = false }
+            var writeError: Error?
+            if let data {
+                do { try data.write(to: url); ok = true } catch { writeError = error }
+            }
+            if ok {
+                canvas.isDirty = false
+            } else {
+                presentSaveError(writeError)
+            }
             completion?(ok)
         }
+    }
+
+    private func presentSaveError(_ error: Error?) {
+        guard let window else { return }
+        let alert = NSAlert()
+        alert.alertStyle = .warning
+        alert.messageText = L("Could not save the screenshot")
+        alert.informativeText = error?.localizedDescription
+            ?? L("The image could not be written. Please try a different location or format.")
+        alert.beginSheetModal(for: window)
+    }
+
+    private func presentExportError() {
+        guard let window else { return }
+        let alert = NSAlert()
+        alert.alertStyle = .warning
+        alert.messageText = L("Could not export the image")
+        alert.beginSheetModal(for: window)
     }
 
     @objc func recognizeText(_ sender: Any?) {

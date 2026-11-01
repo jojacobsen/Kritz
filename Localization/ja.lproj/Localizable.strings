@@ -45,3 +45,13 @@
 "Save the current screenshot?" = "現在のスクリーンショットを保存しますか？";
 "If you don't save it, the new screenshot will replace it." = "保存しない場合、新しいスクリーンショットに置き換えられます。";
 "Replace" = "置き換える";
+
+/* Capture / save error messages (added 0.1.6) */
+"Could not save the screenshot" = "スクリーンショットを保存できませんでした";
+"The image could not be written. Please try a different location or format." = "画像を書き込めませんでした。別の場所または形式をお試しください。";
+"Could not export the image" = "画像を書き出せませんでした";
+"Kritz needs Screen Recording permission" = "Kritz には画面収録の許可が必要です";
+"To capture your screen, enable Kritz under System Settings → Privacy & Security → Screen Recording, then try again." = "画面をキャプチャするには、システム設定 → プライバシーとセキュリティ → 画面収録 で Kritz を有効にしてから、もう一度お試しください。";
+"Open System Settings" = "システム設定を開く";
+"Screenshot failed" = "スクリーンショットに失敗しました";
+"The screen capture could not be completed. Please try again." = "画面のキャプチャを完了できませんでした。もう一度お試しください。";

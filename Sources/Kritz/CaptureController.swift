@@ -1,5 +1,14 @@
 import AppKit
 
+/// Outcome of a capture attempt. Distinguishes a user cancel (press Esc on the
+/// selection overlay) from a genuine failure, so the app only shows an error in
+/// the latter case.
+enum CaptureResult {
+    case image(NSImage)
+    case cancelled
+    case failed(String?)   // optional human-readable reason
+}
+
 /// Capture pipeline:
 ///   1. Show our own crosshair overlay → user drags a region.
 ///   2. If a delay is set, run a visible countdown (so the user can set up the scene,
@@ -18,20 +27,20 @@ final class CaptureController {
     /// The selection overlay itself runs the countdown (keeping the region bright), so by the
     /// time we get `rect` back the countdown has already finished. `rect` is in global screen
     /// coordinates, so the region can be picked on any connected display.
-    func capture(delay: TimeInterval, completion: @escaping (NSImage?) -> Void) {
+    func capture(delay: TimeInterval, completion: @escaping (CaptureResult) -> Void) {
         let overlay = SelectionOverlay()
         selection = overlay
         overlay.begin(delay: delay) { [weak self] rect in
             self?.selection = nil
-            guard let rect else { completion(nil); return } // cancelled
+            guard let rect else { completion(.cancelled); return } // cancelled
             self?.lastRect = rect
             self?.grab(globalRect: rect, completion: completion)
         }
     }
 
     /// Re-captures the most recently selected region without asking again.
-    func repeatLast(completion: @escaping (NSImage?) -> Void) {
-        guard let rect = lastRect else { completion(nil); return }
+    func repeatLast(completion: @escaping (CaptureResult) -> Void) {
+        guard let rect = lastRect else { completion(.cancelled); return }
         grab(globalRect: rect, completion: completion)
     }
 
@@ -55,8 +64,8 @@ final class CaptureController {
         return ids.firstIndex(of: id).map { $0 + 1 }
     }
 
-    private func grab(globalRect: CGRect, completion: @escaping (NSImage?) -> Void) {
-        guard let screen = screen(for: globalRect) else { completion(nil); return }
+    private func grab(globalRect: CGRect, completion: @escaping (CaptureResult) -> Void) {
+        guard let screen = screen(for: globalRect) else { completion(.failed(nil)); return }
         let scale = screen.backingScaleFactor
         let screenHeight = screen.frame.height
         // Region relative to the target screen's own bottom-left origin.
@@ -77,7 +86,7 @@ final class CaptureController {
                     defer { try? FileManager.default.removeItem(at: tmpURL) }
                     guard let full = NSImage(contentsOf: tmpURL),
                           let cg = full.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
-                        completion(nil); return
+                        completion(.failed(nil)); return
                     }
                     // Convert region (screen points, bottom-left origin) → image pixels (top-left).
                     var px = CGRect(x: rect.minX * scale,
@@ -86,16 +95,16 @@ final class CaptureController {
                                     height: rect.height * scale).integral
                     px = px.intersection(CGRect(x: 0, y: 0, width: cg.width, height: cg.height))
                     guard px.width >= 1, px.height >= 1, let cropped = cg.cropping(to: px) else {
-                        completion(nil); return
+                        completion(.failed(nil)); return
                     }
                     let size = NSSize(width: px.width / scale, height: px.height / scale)
-                    completion(NSImage(cgImage: cropped, size: size))
+                    completion(.image(NSImage(cgImage: cropped, size: size)))
                 }
             }
 
             do { try process.run() } catch {
                 NSLog("Kritz: screencapture failed: \(error)")
-                completion(nil)
+                completion(.failed(error.localizedDescription))
             }
         }
     }

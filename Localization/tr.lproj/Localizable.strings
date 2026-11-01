@@ -45,3 +45,13 @@
 "Save the current screenshot?" = "Mevcut ekran görüntüsü kaydedilsin mi?";
 "If you don't save it, the new screenshot will replace it." = "Kaydetmezseniz, yeni ekran görüntüsü bunun yerini alacak.";
 "Replace" = "Değiştir";
+
+/* Capture / save error messages (added 0.1.6) */
+"Could not save the screenshot" = "Ekran görüntüsü kaydedilemedi";
+"The image could not be written. Please try a different location or format." = "Görüntü yazılamadı. Lütfen farklı bir konum veya biçim deneyin.";
+"Could not export the image" = "Görüntü dışa aktarılamadı";
+"Kritz needs Screen Recording permission" = "Kritz, Ekran Kaydı izni gerektiriyor";
+"To capture your screen, enable Kritz under System Settings → Privacy & Security → Screen Recording, then try again." = "Ekranınızı yakalamak için Sistem Ayarları → Gizlilik ve Güvenlik → Ekran Kaydı bölümünden Kritz’i etkinleştirin ve yeniden deneyin.";
+"Open System Settings" = "Sistem Ayarları’nı Aç";
+"Screenshot failed" = "Ekran görüntüsü başarısız oldu";
+"The screen capture could not be completed. Please try again." = "Ekran yakalama tamamlanamadı. Lütfen yeniden deneyin.";

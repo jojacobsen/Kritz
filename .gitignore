@@ -1,5 +1,7 @@
 .build/
+.swiftpm/
 build/
+dist/
 *.dmg
 .DS_Store
 xcuserdata/

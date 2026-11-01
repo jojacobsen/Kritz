@@ -1,4 +1,5 @@
 import AppKit
+import Sparkle
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
 
@@ -6,14 +7,26 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     /// screenshots doesn't pile up (or need closing) one window at a time.
     private var editor: EditorWindowController?
     private let capture = CaptureController()
+    private var updaterController: SPUStandardUpdaterController?   // Sparkle auto-updater
 
     static let timerPresets = [3, 5, 10]
 
+    /// Sparkle needs a real .app bundle; the bare SwiftPM binary has no Info.plist feed keys.
+    private var isBundled: Bool { Bundle.main.bundleURL.pathExtension == "app" }
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         setupMenu()
+        if isBundled {
+            // Sparkle: starts the updater, which checks for updates on its schedule
+            // (SUEnableAutomaticChecks / SUScheduledCheckInterval in Info.plist).
+            updaterController = SPUStandardUpdaterController(
+                startingUpdater: true, updaterDelegate: nil, userDriverDelegate: nil)
+        }
         NSApp.activate(ignoringOtherApps: true)
         startCapture(after: 0)
     }
+
+    @objc func checkForUpdates(_ sender: Any?) { updaterController?.updater.checkForUpdates() }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         false
@@ -107,6 +120,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let about = NSMenuItem(title: L("About Kritz"), action: #selector(showAbout(_:)), keyEquivalent: "")
         about.target = self
         appMenu.addItem(about)
+        let updates = NSMenuItem(title: L("Check for Updates…"),
+                                 action: #selector(checkForUpdates(_:)), keyEquivalent: "")
+        updates.target = self
+        appMenu.addItem(updates)
         appMenu.addItem(.separator())
         appMenu.addItem(withTitle: L("Hide Kritz"),
                         action: #selector(NSApplication.hide(_:)), keyEquivalent: "h")

@@ -10,8 +10,16 @@ set -euo pipefail
 
 APP_NAME="Kritz"
 BUNDLE_ID="com.johannesjacob.kritz"
-VERSION="0.1.4"
+VERSION="0.1.5"
+# Sparkle compares this monotonically-increasing integer build number to decide
+# whether an update is newer. Bump it on every release (see release.sh).
+BUILD="6"
 MIN_MACOS="14.0"
+
+# Sparkle auto-updater feed (served via GitHub Pages from docs/appcast.xml).
+FEED_URL="https://jojacobsen.github.io/Kritz/appcast.xml"
+# EdDSA public key; private key lives in the login Keychain (generate_keys).
+PUBLIC_ED_KEY="S2mnzu9XJCjFet7jCSsgzo1pQ4xjB4QajvZ6D+k0lbU="
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 cd "$ROOT"
@@ -37,13 +45,17 @@ cat > "$APP_DIR/Contents/Info.plist" <<PLIST
     <key>CFBundleExecutable</key><string>$APP_NAME</string>
     <key>CFBundlePackageType</key><string>APPL</string>
     <key>CFBundleShortVersionString</key><string>$VERSION</string>
-    <key>CFBundleVersion</key><string>$VERSION</string>
+    <key>CFBundleVersion</key><string>$BUILD</string>
     <key>LSMinimumSystemVersion</key><string>$MIN_MACOS</string>
     <key>NSHighResolutionCapable</key><true/>
     <key>NSPrincipalClass</key><string>NSApplication</string>
     <key>CFBundleDevelopmentRegion</key><string>en</string>
     <key>CFBundleIconFile</key><string>AppIcon</string>
     <key>CFBundleIconName</key><string>AppIcon</string>
+    <key>SUFeedURL</key><string>$FEED_URL</string>
+    <key>SUPublicEDKey</key><string>$PUBLIC_ED_KEY</string>
+    <key>SUEnableAutomaticChecks</key><true/>
+    <key>SUScheduledCheckInterval</key><integer>86400</integer>
 </dict>
 </plist>
 PLIST
@@ -60,8 +72,19 @@ if [ -d "$ROOT/Localization" ]; then
     echo "✓ Copied $(ls -d "$ROOT/Localization/"*.lproj | wc -l | tr -d ' ') localizations"
 fi
 
+# Embed Sparkle.framework (auto-updater) from the SwiftPM binary artifact.
+SPARKLE_FW="$(find "$ROOT/.build" -type d -path '*/Sparkle.xcframework/macos-*/Sparkle.framework' 2>/dev/null | head -1)"
+if [ -n "$SPARKLE_FW" ]; then
+    mkdir -p "$APP_DIR/Contents/Frameworks"
+    rm -rf "$APP_DIR/Contents/Frameworks/Sparkle.framework"
+    cp -R "$SPARKLE_FW" "$APP_DIR/Contents/Frameworks/Sparkle.framework"
+    echo "✓ Embedded Sparkle.framework"
+else
+    echo "⚠︎ Sparkle.framework not found in .build — run 'swift build' first" >&2
+fi
+
 # Ad-hoc signature (-). For release, swap for your Developer ID identity.
-codesign --force --sign - "$APP_DIR"
+codesign --force --deep --sign - "$APP_DIR"
 
 echo "✓ Built $APP_DIR"
 

@@ -4,6 +4,18 @@
         <title>Kritz</title>
         <!-- Populated by release.sh (generate_appcast). Empty until the first Sparkle release. -->
         <item>
+            <title>0.1.6</title>
+            <pubDate>Sun, 01 Nov 2026 19:47:15 +0100</pubDate>
+            <sparkle:version>7</sparkle:version>
+            <sparkle:shortVersionString>0.1.6</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
+            <enclosure url="https://github.com/jojacobsen/Kritz/releases/download/appcast/Kritz-0.1.6.dmg" length="1345774" type="application/octet-stream" sparkle:edSignature="ShymZSIR6b1ZX+8dUO1D3g+kebvyl8gMKE27xATzw+2SNIcjBdBqPmlTq8j3aTukGRUyAtB5lC2H2FOLONVXCQ=="/>
+            <sparkle:deltas>
+                <enclosure url="https://github.com/jojacobsen/Kritz/releases/download/appcast/Kritz7-6.delta" sparkle:deltaFrom="6" length="45902" type="application/octet-stream" sparkle:deltaFromSparkleExecutableSize="976432" sparkle:deltaFromSparkleLocales="de,he,ar,el,ja,fa,uk" sparkle:edSignature="CKBKuIAKz4qq01rk4g0MaT2ux+YJhW1das7uuDWb+Zzir1tlb7PJxtkTZthGn6EwTW50r+cAKQxF4+NgjZ+xCw=="/>
+            </sparkle:deltas>
+        </item>
+        <item>
             <title>0.1.5</title>
             <pubDate>Sun, 01 Nov 2026 16:33:45 +0100</pubDate>
             <sparkle:version>6</sparkle:version>

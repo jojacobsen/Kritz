@@ -55,3 +55,9 @@
 "Open System Settings" = "सिस्टम सेटिंग्स खोलें";
 "Screenshot failed" = "स्क्रीनशॉट विफल";
 "The screen capture could not be completed. Please try again." = "स्क्रीन कैप्चर पूरा नहीं हो सका. कृपया पुनः प्रयास करें.";
+
+/* Open existing image (added 0.1.7) */
+"Open" = "खोलें";
+"Open Image…" = "छवि खोलें…";
+"Could not open the image" = "छवि नहीं खोली जा सकी";
+"The file could not be read as an image. Please choose a different file." = "फ़ाइल को छवि के रूप में नहीं पढ़ा जा सका. कृपया कोई दूसरी फ़ाइल चुनें.";

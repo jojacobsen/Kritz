@@ -55,3 +55,9 @@
 "Open System Settings" = "システム設定を開く";
 "Screenshot failed" = "スクリーンショットに失敗しました";
 "The screen capture could not be completed. Please try again." = "画面のキャプチャを完了できませんでした。もう一度お試しください。";
+
+/* Open existing image (added 0.1.7) */
+"Open" = "開く";
+"Open Image…" = "画像を開く…";
+"Could not open the image" = "画像を開けませんでした";
+"The file could not be read as an image. Please choose a different file." = "ファイルを画像として読み込めませんでした。別のファイルを選択してください。";

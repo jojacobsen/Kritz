@@ -55,3 +55,9 @@
 "Open System Settings" = "Открыть Системные настройки";
 "Screenshot failed" = "Не удалось сделать снимок экрана";
 "The screen capture could not be completed. Please try again." = "Не удалось выполнить захват экрана. Повторите попытку.";
+
+/* Open existing image (added 0.1.7) */
+"Open" = "Открыть";
+"Open Image…" = "Открыть изображение…";
+"Could not open the image" = "Не удалось открыть изображение";
+"The file could not be read as an image. Please choose a different file." = "Не удалось прочитать файл как изображение. Выберите другой файл.";

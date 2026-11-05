@@ -55,3 +55,9 @@
 "Open System Settings" = "打开系统设置";
 "Screenshot failed" = "屏幕快照失败";
 "The screen capture could not be completed. Please try again." = "无法完成屏幕捕捉。请重试。";
+
+/* Open existing image (added 0.1.7) */
+"Open" = "打开";
+"Open Image…" = "打开图像…";
+"Could not open the image" = "无法打开图像";
+"The file could not be read as an image. Please choose a different file." = "无法将该文件读取为图像。请选择其他文件。";

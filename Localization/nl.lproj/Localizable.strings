@@ -55,3 +55,9 @@
 "Open System Settings" = "Systeeminstellingen openen";
 "Screenshot failed" = "Schermafbeelding mislukt";
 "The screen capture could not be completed. Please try again." = "De schermopname kon niet worden voltooid. Probeer het opnieuw.";
+
+/* Open existing image (added 0.1.7) */
+"Open" = "Open";
+"Open Image…" = "Afbeelding openen…";
+"Could not open the image" = "Kan afbeelding niet openen";
+"The file could not be read as an image. Please choose a different file." = "Het bestand kon niet als afbeelding worden gelezen. Kies een ander bestand.";

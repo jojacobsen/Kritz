@@ -1,5 +1,6 @@
 import AppKit
 import Sparkle
+import UniformTypeIdentifiers
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
 
@@ -74,6 +75,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         case .image(let captured):
             image = captured
         }
+        present(image: image)
+    }
+
+    /// Shows `image` in the editor, reusing the one open window (prompting to save any
+    /// unsaved work first) or creating it. Shared by screen captures and File ▸ Open.
+    private func present(image: NSImage) {
         if let editor {
             // Reuse the open window; it prompts to save unsaved work before replacing.
             editor.showWindow(nil)
@@ -85,6 +92,40 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             editor.showWindow(nil)
         }
         NSApp.activate(ignoringOtherApps: true)
+    }
+
+    // MARK: - Open an existing image
+
+    @objc func openImage(_ sender: Any?) {
+        let panel = NSOpenPanel()
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
+        panel.allowedContentTypes = [.image]
+        panel.prompt = L("Open")
+        NSApp.activate(ignoringOtherApps: true)
+        let load: (NSApplication.ModalResponse) -> Void = { [weak self] response in
+            guard let self, response == .OK, let url = panel.url else { return }
+            guard let image = NSImage(contentsOf: url), image.size.width >= 1, image.size.height >= 1 else {
+                self.presentOpenError()
+                return
+            }
+            self.present(image: image)
+        }
+        // Sheet it on the editor window when one is open; otherwise a free-standing panel.
+        if let window = editor?.window, window.isVisible {
+            panel.beginSheetModal(for: window, completionHandler: load)
+        } else {
+            load(panel.runModal())
+        }
+    }
+
+    private func presentOpenError() {
+        let alert = NSAlert()
+        alert.alertStyle = .warning
+        alert.messageText = L("Could not open the image")
+        alert.informativeText = L("The file could not be read as an image. Please choose a different file.")
+        NSApp.activate(ignoringOtherApps: true)
+        alert.runModal()
     }
 
     // MARK: - Permission & errors
@@ -187,6 +228,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                              action: #selector(newScreenshot(_:)), keyEquivalent: "n")
         new.target = self
         fileMenu.addItem(new)
+
+        let open = NSMenuItem(title: L("Open Image…"),
+                              action: #selector(openImage(_:)), keyEquivalent: "o")
+        open.target = self
+        fileMenu.addItem(open)
 
         let timerItem = NSMenuItem(title: L("Timed Capture"), action: nil, keyEquivalent: "")
         let timerMenu = NSMenu()

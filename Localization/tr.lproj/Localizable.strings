@@ -55,3 +55,9 @@
 "Open System Settings" = "Sistem Ayarları’nı Aç";
 "Screenshot failed" = "Ekran görüntüsü başarısız oldu";
 "The screen capture could not be completed. Please try again." = "Ekran yakalama tamamlanamadı. Lütfen yeniden deneyin.";
+
+/* Open existing image (added 0.1.7) */
+"Open" = "Aç";
+"Open Image…" = "Görüntü Aç…";
+"Could not open the image" = "Görüntü açılamadı";
+"The file could not be read as an image. Please choose a different file." = "Dosya bir görüntü olarak okunamadı. Lütfen farklı bir dosya seçin.";

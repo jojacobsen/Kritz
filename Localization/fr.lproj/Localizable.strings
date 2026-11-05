@@ -55,3 +55,9 @@
 "Open System Settings" = "Ouvrir Réglages Système";
 "Screenshot failed" = "Échec de la capture";
 "The screen capture could not be completed. Please try again." = "La capture d’écran n’a pas pu être effectuée. Veuillez réessayer.";
+
+/* Open existing image (added 0.1.7) */
+"Open" = "Ouvrir";
+"Open Image…" = "Ouvrir une image…";
+"Could not open the image" = "Impossible d’ouvrir l’image";
+"The file could not be read as an image. Please choose a different file." = "Le fichier n’a pas pu être lu comme une image. Veuillez choisir un autre fichier.";

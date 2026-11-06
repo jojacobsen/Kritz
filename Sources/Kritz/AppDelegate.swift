@@ -33,6 +33,24 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         false
     }
 
+    /// Kritz keeps running with no window after the editor is closed (or a capture is
+    /// cancelled). Re-opening it — Dock icon, Spotlight, or `open` — must then do
+    /// something visible: bring back the editor window if one exists, otherwise start a
+    /// fresh capture like a launch does. Without this, re-opening only moves focus to
+    /// Kritz (the menu bar changes) while nothing appears on screen.
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        if flag { return true } // a window (or the capture overlay) is already on screen
+        if let window = editor?.window {
+            if window.isMiniaturized { window.deminiaturize(nil) }
+            editor?.showWindow(nil)
+            window.makeKeyAndOrderFront(nil)
+            NSApp.activate(ignoringOtherApps: true)
+        } else {
+            startCapture(after: 0)
+        }
+        return true
+    }
+
     // MARK: - Capture
 
     @objc func newScreenshot(_ sender: Any?) {

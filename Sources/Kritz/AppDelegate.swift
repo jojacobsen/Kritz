@@ -9,6 +9,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var editor: EditorWindowController?
     private let capture = CaptureController()
     private var updaterController: SPUStandardUpdaterController?   // Sparkle auto-updater
+    private var globalHotKey: GlobalHotKey?
+    private var preferencesWC: PreferencesWindowController?
 
     static let timerPresets = [3, 5, 10]
 
@@ -23,11 +25,37 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             updaterController = SPUStandardUpdaterController(
                 startingUpdater: true, updaterDelegate: nil, userDriverDelegate: nil)
         }
+        registerGlobalHotKey()
         NSApp.activate(ignoringOtherApps: true)
         startCapture(after: 0)
     }
 
     @objc func checkForUpdates(_ sender: Any?) { updaterController?.updater.checkForUpdates() }
+
+    // MARK: - Global capture hot key
+
+    /// (Re-)registers the system-wide capture shortcut from the stored preference.
+    /// Setting `globalHotKey` to nil first unregisters any previous key, so the new
+    /// RegisterEventHotKey doesn't fail with "already exists".
+    private func registerGlobalHotKey() {
+        globalHotKey = nil
+        guard let shortcut = HotKeyShortcut.stored else { return }
+        globalHotKey = GlobalHotKey(keyCode: UInt32(shortcut.keyCode),
+                                    carbonModifiers: shortcut.carbonModifiers) { [weak self] in
+            self?.newScreenshot(nil)
+        }
+    }
+
+    @objc func showPreferences(_ sender: Any?) {
+        if preferencesWC == nil {
+            let wc = PreferencesWindowController()
+            wc.onShortcutChange = { [weak self] _ in self?.registerGlobalHotKey() }
+            preferencesWC = wc
+        }
+        preferencesWC?.showWindow(nil)
+        preferencesWC?.window?.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
+    }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         false
@@ -230,6 +258,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                                  action: #selector(checkForUpdates(_:)), keyEquivalent: "")
         updates.target = self
         appMenu.addItem(updates)
+        appMenu.addItem(.separator())
+        let settings = NSMenuItem(title: L("Settings…"),
+                                  action: #selector(showPreferences(_:)), keyEquivalent: ",")
+        settings.target = self
+        appMenu.addItem(settings)
         appMenu.addItem(.separator())
         appMenu.addItem(withTitle: L("Hide Kritz"),
                         action: #selector(NSApplication.hide(_:)), keyEquivalent: "h")

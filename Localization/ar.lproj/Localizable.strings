@@ -61,3 +61,12 @@
 "Open Image…" = "فتح صورة…";
 "Could not open the image" = "تعذّر فتح الصورة";
 "The file could not be read as an image. Please choose a different file." = "تعذّرت قراءة الملف كصورة. يُرجى اختيار ملف آخر.";
+
+/* Settings / global capture hot key (added 0.2.0) */
+"Settings…" = "الإعدادات…";
+"Settings" = "الإعدادات";
+"Global capture shortcut:" = "اختصار الالتقاط العام:";
+"Press this shortcut from any app to start a capture." = "اضغط هذا الاختصار من أي تطبيق لبدء الالتقاط.";
+"Click to record shortcut" = "انقر لتسجيل الاختصار";
+"Type shortcut…" = "اضغط الاختصار…";
+"Clear" = "مسح";

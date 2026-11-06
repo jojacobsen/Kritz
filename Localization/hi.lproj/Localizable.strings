@@ -61,3 +61,12 @@
 "Open Image…" = "छवि खोलें…";
 "Could not open the image" = "छवि नहीं खोली जा सकी";
 "The file could not be read as an image. Please choose a different file." = "फ़ाइल को छवि के रूप में नहीं पढ़ा जा सका. कृपया कोई दूसरी फ़ाइल चुनें.";
+
+/* Settings / global capture hot key (added 0.2.0) */
+"Settings…" = "सेटिंग्स…";
+"Settings" = "सेटिंग्स";
+"Global capture shortcut:" = "ग्लोबल कैप्चर शॉर्टकट:";
+"Press this shortcut from any app to start a capture." = "कैप्चर शुरू करने के लिए किसी भी ऐप से यह शॉर्टकट दबाएँ.";
+"Click to record shortcut" = "शॉर्टकट रिकॉर्ड करने के लिए क्लिक करें";
+"Type shortcut…" = "शॉर्टकट दबाएँ…";
+"Clear" = "साफ़ करें";

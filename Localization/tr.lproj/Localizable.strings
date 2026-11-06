@@ -61,3 +61,12 @@
 "Open Image…" = "Görüntü Aç…";
 "Could not open the image" = "Görüntü açılamadı";
 "The file could not be read as an image. Please choose a different file." = "Dosya bir görüntü olarak okunamadı. Lütfen farklı bir dosya seçin.";
+
+/* Settings / global capture hot key (added 0.2.0) */
+"Settings…" = "Ayarlar…";
+"Settings" = "Ayarlar";
+"Global capture shortcut:" = "Genel yakalama kısayolu:";
+"Press this shortcut from any app to start a capture." = "Bir yakalama başlatmak için bu kısayolu herhangi bir uygulamadan kullanın.";
+"Click to record shortcut" = "Kısayolu kaydetmek için tıklayın";
+"Type shortcut…" = "Kısayola basın…";
+"Clear" = "Temizle";

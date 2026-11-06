@@ -61,3 +61,12 @@
 "Open Image…" = "打开图像…";
 "Could not open the image" = "无法打开图像";
 "The file could not be read as an image. Please choose a different file." = "无法将该文件读取为图像。请选择其他文件。";
+
+/* Settings / global capture hot key (added 0.2.0) */
+"Settings…" = "设置…";
+"Settings" = "设置";
+"Global capture shortcut:" = "全局捕捉快捷键：";
+"Press this shortcut from any app to start a capture." = "在任何 App 中按下此快捷键即可开始捕捉。";
+"Click to record shortcut" = "点按以录制快捷键";
+"Type shortcut…" = "请按快捷键…";
+"Clear" = "清除";

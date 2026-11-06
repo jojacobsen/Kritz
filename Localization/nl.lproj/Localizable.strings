@@ -61,3 +61,12 @@
 "Open Image…" = "Afbeelding openen…";
 "Could not open the image" = "Kan afbeelding niet openen";
 "The file could not be read as an image. Please choose a different file." = "Het bestand kon niet als afbeelding worden gelezen. Kies een ander bestand.";
+
+/* Settings / global capture hot key (added 0.2.0) */
+"Settings…" = "Instellingen…";
+"Settings" = "Instellingen";
+"Global capture shortcut:" = "Globale opnamesneltoets:";
+"Press this shortcut from any app to start a capture." = "Druk deze sneltoets in vanuit elke app om een opname te starten.";
+"Click to record shortcut" = "Klik om een sneltoets op te nemen";
+"Type shortcut…" = "Druk de sneltoets in…";
+"Clear" = "Wissen";

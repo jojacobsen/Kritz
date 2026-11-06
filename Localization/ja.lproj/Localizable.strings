@@ -61,3 +61,12 @@
 "Open Image…" = "画像を開く…";
 "Could not open the image" = "画像を開けませんでした";
 "The file could not be read as an image. Please choose a different file." = "ファイルを画像として読み込めませんでした。別のファイルを選択してください。";
+
+/* Settings / global capture hot key (added 0.2.0) */
+"Settings…" = "設定…";
+"Settings" = "設定";
+"Global capture shortcut:" = "グローバルキャプチャのショートカット:";
+"Press this shortcut from any app to start a capture." = "どのアプリからでもこのショートカットを押すとキャプチャを開始します。";
+"Click to record shortcut" = "クリックしてショートカットを登録";
+"Type shortcut…" = "ショートカットを押してください…";
+"Clear" = "消去";

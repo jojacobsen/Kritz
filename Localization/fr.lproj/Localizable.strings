@@ -61,3 +61,12 @@
 "Open Image…" = "Ouvrir une image…";
 "Could not open the image" = "Impossible d’ouvrir l’image";
 "The file could not be read as an image. Please choose a different file." = "Le fichier n’a pas pu être lu comme une image. Veuillez choisir un autre fichier.";
+
+/* Settings / global capture hot key (added 0.2.0) */
+"Settings…" = "Réglages…";
+"Settings" = "Réglages";
+"Global capture shortcut:" = "Raccourci de capture global :";
+"Press this shortcut from any app to start a capture." = "Utilisez ce raccourci depuis n’importe quelle app pour lancer une capture.";
+"Click to record shortcut" = "Cliquez pour enregistrer le raccourci";
+"Type shortcut…" = "Appuyez sur le raccourci…";
+"Clear" = "Effacer";

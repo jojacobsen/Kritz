@@ -61,3 +61,12 @@
 "Open Image…" = "Открыть изображение…";
 "Could not open the image" = "Не удалось открыть изображение";
 "The file could not be read as an image. Please choose a different file." = "Не удалось прочитать файл как изображение. Выберите другой файл.";
+
+/* Settings / global capture hot key (added 0.2.0) */
+"Settings…" = "Настройки…";
+"Settings" = "Настройки";
+"Global capture shortcut:" = "Глобальное сочетание для захвата:";
+"Press this shortcut from any app to start a capture." = "Нажмите это сочетание в любом приложении, чтобы начать захват.";
+"Click to record shortcut" = "Нажмите, чтобы записать сочетание";
+"Type shortcut…" = "Нажмите сочетание…";
+"Clear" = "Очистить";

@@ -10,10 +10,10 @@ set -euo pipefail
 
 APP_NAME="Kritz"
 BUNDLE_ID="com.johannesjacob.kritz"
-VERSION="0.1.8"
+VERSION="0.2.0"
 # Sparkle compares this monotonically-increasing integer build number to decide
 # whether an update is newer. Bump it on every release (see release.sh).
-BUILD="9"
+BUILD="10"
 MIN_MACOS="14.0"
 
 # Sparkle auto-updater feed (served via GitHub Pages from docs/appcast.xml).

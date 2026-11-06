@@ -4,6 +4,20 @@
         <title>Kritz</title>
         <!-- Populated by release.sh (generate_appcast). Empty until the first Sparkle release. -->
         <item>
+            <title>0.1.8</title>
+            <pubDate>Fri, 06 Nov 2026 16:28:12 +0100</pubDate>
+            <sparkle:version>9</sparkle:version>
+            <sparkle:shortVersionString>0.1.8</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
+            <enclosure url="https://github.com/jojacobsen/Kritz/releases/download/appcast/Kritz-0.1.8.dmg" length="1620889" type="application/octet-stream" sparkle:edSignature="vX5okRzLRPGNqSJr5pnlbJbKczo+ljR5o9An4D1MDFa4oR1cqlxc21hfO0TdXudQHY4mYu4oPTR6XvVNU8ZICA=="/>
+            <sparkle:deltas>
+                <enclosure url="https://github.com/jojacobsen/Kritz/releases/download/appcast/Kritz9-8.delta" sparkle:deltaFrom="8" length="22506" type="application/octet-stream" sparkle:deltaFromSparkleExecutableSize="976432" sparkle:deltaFromSparkleLocales="de,he,ar,el,ja,fa,uk" sparkle:edSignature="ofJ9Fcl/bv7BA4oiqMs4ebyIqrP9naeQlgdC9oYkGfR+9H/Gvo9P98vWDjx//q3yC+1PucR20FeVuPvveVV6AQ=="/>
+                <enclosure url="https://github.com/jojacobsen/Kritz/releases/download/appcast/Kritz9-7.delta" sparkle:deltaFrom="7" length="42530" type="application/octet-stream" sparkle:deltaFromSparkleExecutableSize="976432" sparkle:deltaFromSparkleLocales="de,he,ar,el,ja,fa,uk" sparkle:edSignature="POu52P5JTThsWowmTPRWiGCA6wL6gE9NtsJ7JDBETg3tZAI/GQLcLAsctdECE/50ELK1IwFsLn9Fe6UkoY9NDw=="/>
+                <enclosure url="https://github.com/jojacobsen/Kritz/releases/download/appcast/Kritz9-6.delta" sparkle:deltaFrom="6" length="51274" type="application/octet-stream" sparkle:deltaFromSparkleExecutableSize="976432" sparkle:deltaFromSparkleLocales="de,he,ar,el,ja,fa,uk" sparkle:edSignature="HN5Tnqm6PXrTqkYGAGr79aFsqBAnD9w9/9vpXBROv76fud3+i2V4tayDi1jEZAe19yMHbOeU4suYluldg2uJBw=="/>
+            </sparkle:deltas>
+        </item>
+        <item>
             <title>0.1.7</title>
             <pubDate>Thu, 05 Nov 2026 16:36:15 +0100</pubDate>
             <sparkle:version>8</sparkle:version>
@@ -27,15 +41,6 @@
             <sparkle:deltas>
                 <enclosure url="https://github.com/jojacobsen/Kritz/releases/download/appcast/Kritz7-6.delta" sparkle:deltaFrom="6" length="45902" type="application/octet-stream" sparkle:deltaFromSparkleExecutableSize="976432" sparkle:deltaFromSparkleLocales="de,he,ar,el,ja,fa,uk" sparkle:edSignature="CKBKuIAKz4qq01rk4g0MaT2ux+YJhW1das7uuDWb+Zzir1tlb7PJxtkTZthGn6EwTW50r+cAKQxF4+NgjZ+xCw=="/>
             </sparkle:deltas>
-        </item>
-        <item>
-            <title>0.1.5</title>
-            <pubDate>Sun, 01 Nov 2026 16:33:45 +0100</pubDate>
-            <sparkle:version>6</sparkle:version>
-            <sparkle:shortVersionString>0.1.5</sparkle:shortVersionString>
-            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
-            <enclosure url="https://github.com/jojacobsen/Kritz/releases/download/appcast/Kritz-0.1.5.dmg" length="1337581" type="application/octet-stream" sparkle:edSignature="mAMu0Rim33lzDjzzYf8eCCo8tJkoE+pIPyvl68DQwEgmNEXA98IQiNShni+plBxZ7R3/Pn1L1iuPTcd5vjTJBw=="/>
         </item>
     </channel>
 </rss>

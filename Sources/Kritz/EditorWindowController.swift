@@ -114,7 +114,7 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
 
         window.makeFirstResponder(canvas)
         highlightSelectedTool()
-        DispatchQueue.main.async { [weak self] in self?.zoomToFit() }
+        DispatchQueue.main.async { [weak self] in self?.sizeWindowToImage() }
     }
 
     private func makeTopBar() -> NSView {
@@ -451,8 +451,49 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
 
     // MARK: - Zoom / status
 
+    /// Grows (or shrinks) the window so the screenshot is shown at 100 % when it
+    /// fits on the current screen, otherwise as large as the screen allows. The
+    /// top-left corner stays put so a window the user positioned doesn't jump, and
+    /// the frame is constrained to the visible screen area. Falls back to a plain
+    /// zoom-to-fit when there's no window/screen.
+    private func sizeWindowToImage() {
+        guard let window else { return }
+        let image = canvas.pixelSize
+        guard image.width > 0, image.height > 0,
+              let screen = window.screen ?? NSScreen.main else { zoomToFit(); return }
+
+        // Content area the canvas needs = screenshot + the surrounding chrome.
+        let chromeWidth = sidebarWidth
+        let chromeHeight = topBarHeight + statusBarHeight
+
+        // Keep a margin so the window never fully covers the screen.
+        let margin: CGFloat = 20
+        let visible = screen.visibleFrame
+        let maxContentWidth = visible.width - 2 * margin
+        let maxContentHeight = visible.height - 2 * margin
+
+        let contentSize = NSSize(
+            width: max(min(image.width + chromeWidth, maxContentWidth), window.contentMinSize.width),
+            height: max(min(image.height + chromeHeight, maxContentHeight), window.contentMinSize.height))
+
+        let oldFrame = window.frame
+        var newFrame = window.frameRect(forContentRect:
+            NSRect(x: oldFrame.minX, y: 0, width: contentSize.width, height: contentSize.height))
+        // Anchor the top-left corner (macOS windows grow downward from the title bar).
+        newFrame.origin.x = oldFrame.minX
+        newFrame.origin.y = oldFrame.maxY - newFrame.height
+        // Constrain into the visible screen area.
+        newFrame.origin.x = min(max(newFrame.minX, visible.minX), visible.maxX - newFrame.width)
+        newFrame.origin.y = min(max(newFrame.minY, visible.minY), visible.maxY - newFrame.height)
+
+        window.setFrame(newFrame, display: true)
+        zoomToFit()
+    }
+
     private func zoomToFit() {
-        let available = scrollView.contentView.bounds.size
+        // Use the clip view's frame (point size, magnification-independent) rather
+        // than its bounds (which is scaled by the current magnification).
+        let available = scrollView.contentView.frame.size
         guard canvas.pixelSize.width > 0, canvas.pixelSize.height > 0 else { return }
         let scale = min(available.width / canvas.pixelSize.width,
                         available.height / canvas.pixelSize.height,
@@ -599,7 +640,7 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
         canvas.loadImage(image)
         canvas.clearSelection()
         window?.makeFirstResponder(canvas)
-        DispatchQueue.main.async { [weak self] in self?.zoomToFit() }
+        DispatchQueue.main.async { [weak self] in self?.sizeWindowToImage() }
     }
 
     @objc func saveDocument(_ sender: Any?) { save() }
